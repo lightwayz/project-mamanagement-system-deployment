@@ -1,0 +1,53 @@
+<div class="layout-container">
+  <mat-toolbar color="primary" class="toolbar">
+    <button mat-icon-button (click)="toggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Hometronix</span>
+    <span class="spacer"></span>
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+      <span class="ml-2">{{ currentUser?.name }}</span>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="toggleTheme()">
+        <mat-icon>{{ isDarkTheme ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        <span>{{ isDarkTheme ? 'Light Theme' : 'Dark Theme' }}</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav [opened]="sidenavOpened" 
+                 [mode]="getSidenavMode()" 
+                 (backdropClick)="onSidenavBackdropClick()" 
+                 class="sidenav">
+      <nav class="nav-menu">
+        <a class="nav-item" 
+           *ngFor="let item of menuItems" 
+           [routerLink]="item.path" 
+           routerLinkActive="active"
+           [class.hidden]="!hasAccess(item.roles)"
+           (click)="isMobile && toggleSidenav()">
+          <div class="nav-content">
+            <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+            <span class="nav-label">{{ item.label }}</span>
+          </div>
+        </a>
+      </nav>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="content">
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  <!-- Password Expiry Notification -->
+  <app-password-notification></app-password-notification>
+</div>

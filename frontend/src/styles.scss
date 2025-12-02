@@ -1,0 +1,1240 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$primary: mat.define-palette(mat.$blue-palette);
+$accent: mat.define-palette(mat.$blue-grey-palette);
+$warn: mat.define-palette(mat.$red-palette);
+
+// Define light theme
+$light-theme: mat.define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+  )
+));
+
+// Define dark theme
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+  )
+));
+
+// Apply base theme
+@include mat.all-component-themes($light-theme);
+
+// Apply dark theme when body has dark-theme class
+.dark-theme {
+  @include mat.all-component-themes($dark-theme);
+}
+
+// CSS Variables for theme colors
+:root {
+  --background-color: #f5f5f5;
+  --surface-color: #ffffff;
+  --text-primary: rgba(0, 0, 0, 0.87);
+  --text-secondary: rgba(0, 0, 0, 0.54);
+  --text-tertiary: rgba(0, 0, 0, 0.38);
+  --border-color: rgba(0, 0, 0, 0.12);
+  --hover-color: rgba(0, 0, 0, 0.04);
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme {
+  --background-color: #121212;
+  --surface-color: #1e1e1e;
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-tertiary: rgba(255, 255, 255, 0.5);
+  --border-color: rgba(255, 255, 255, 0.12);
+  --hover-color: rgba(255, 255, 255, 0.04);
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+.mr-2 { margin-right: 16px; }
+.ml-2 { margin-left: 16px; }
+
+/* Fix for invisible button text in dialogs */
+.save-btn.mat-flat-button {
+  color: white !important;
+}
+
+.save-btn.mat-flat-button .mat-button-wrapper {
+  color: white !important;
+}
+
+.save-btn.mat-flat-button span {
+  color: white !important;
+}
+
+/* Theme-aware utility classes */
+.text-primary {
+  color: var(--text-primary) !important;
+}
+
+.text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.text-tertiary {
+  color: var(--text-tertiary) !important;
+}
+
+.surface-bg {
+  background-color: var(--surface-color) !important;
+}
+
+.background-bg {
+  background-color: var(--background-color) !important;
+}
+
+/* Ensure cards use theme colors */
+.mat-card {
+  background-color: var(--surface-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Ensure proper contrast for all text elements */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+}
+
+p, span, div {
+  color: inherit;
+}
+
+/* Fix for Material components in dark theme */
+.dark-theme .mat-form-field-label {
+  color: var(--text-secondary) !important;
+}
+
+.dark-theme .mat-form-field-underline {
+  background-color: var(--border-color) !important;
+}
+
+.dark-theme .mat-option {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-select-value {
+  color: var(--text-primary) !important;
+}
+
+/* Comprehensive dark theme form field fixes */
+.dark-theme .mat-input-element {
+  color: var(--text-primary) !important;
+  caret-color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: var(--border-color) !important;
+}
+
+.dark-theme .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: var(--text-secondary) !important;
+}
+
+.dark-theme .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: mat.get-color-from-palette($primary, 500) !important;
+}
+
+.dark-theme .mat-form-field-appearance-outline .mat-form-field-infix {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme input {
+  color: var(--text-primary) !important;
+  caret-color: var(--text-primary) !important;
+}
+
+.dark-theme input[type="text"] {
+  color: var(--text-primary) !important;
+  caret-color: var(--text-primary) !important;
+}
+
+.dark-theme input[type="email"] {
+  color: var(--text-primary) !important;
+  caret-color: var(--text-primary) !important;
+}
+
+.dark-theme input[type="password"] {
+  color: var(--text-primary) !important;
+  caret-color: var(--text-primary) !important;
+}
+
+.dark-theme textarea {
+  color: var(--text-primary) !important;
+  caret-color: var(--text-primary) !important;
+}
+
+/* More specific targeting for Material form fields */
+.dark-theme .mat-form-field input {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-form-field textarea {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-form-field-infix input {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-form-field-infix textarea {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-select-arrow {
+  color: var(--text-secondary) !important;
+}
+
+.dark-theme .mat-checkbox-label {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-radio-label-content {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-slide-toggle-content {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for placeholder text - make all placeholders white for dark theme */
+.dark-theme .mat-input-element::placeholder {
+  color: rgba(255, 255, 255, 0.54) !important;
+}
+
+.dark-theme .mat-form-field-placeholder {
+  color: rgba(255, 255, 255, 0.54) !important;
+}
+
+/* CRITICAL: Build System dark theme fixes - Force visibility */
+.dark-theme {
+  /* Fix status dropdown - force dark background and white text */
+  .mat-form-field .mat-select-value,
+  .mat-form-field .mat-select-value-text,
+  .mat-select-trigger,
+  .mat-select-value,
+  .mat-select-value-text {
+    color: rgba(255, 255, 255, 0.95) !important;
+    background: transparent !important;
+  }
+
+  /* Fix dropdown panel background */
+  .mat-select-panel {
+    background: #1e1e1e !important;
+  }
+
+  /* Fix dropdown options */
+  .mat-option {
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    &.mat-selected {
+      background: rgba(102, 126, 234, 0.15) !important;
+    }
+  }
+
+  /* Fix status chips - force colored backgrounds and visibility */
+  mat-chip.status-active,
+  .mat-chip.status-active,
+  .status-active.mat-chip,
+  .status-active {
+    background-color: rgba(76, 175, 80, 0.15) !important;
+    color: #81c784 !important;
+    border: 1px solid rgba(76, 175, 80, 0.3) !important;
+
+    .mat-chip-text,
+    span,
+    mat-icon,
+    .status-icon {
+      color: #81c784 !important;
+    }
+  }
+
+  mat-chip.status-inactive,
+  .mat-chip.status-inactive,
+  .status-inactive.mat-chip,
+  .status-inactive {
+    background-color: rgba(255, 152, 0, 0.15) !important;
+    color: #ffb74d !important;
+    border: 1px solid rgba(255, 152, 0, 0.3) !important;
+
+    .mat-chip-text,
+    span,
+    mat-icon,
+    .status-icon {
+      color: #ffb74d !important;
+    }
+  }
+
+  /* Fix mat-form-field container backgrounds - GLOBAL (not just dialogs) */
+  .mat-form-field-wrapper,
+  .mat-form-field-flex,
+  .mat-form-field-infix {
+    background-color: transparent !important;
+  }
+
+  /* Extra specificity for outline appearance */
+  .mat-form-field-appearance-outline {
+    background-color: transparent !important;
+
+    .mat-form-field-wrapper,
+    .mat-form-field-flex,
+    .mat-form-field-infix {
+      background-color: transparent !important;
+    }
+  }
+
+  /* ULTRA-SPECIFIC FIX: Target filters section mat-form-fields directly */
+  .filters-section,
+  .filters-content {
+    .mat-form-field,
+    mat-form-field {
+      background-color: transparent !important;
+
+      &.mat-form-field-appearance-outline {
+        background-color: transparent !important;
+      }
+    }
+
+    .status-filter {
+      background-color: transparent !important;
+
+      &.mat-form-field,
+      .mat-form-field {
+        background-color: transparent !important;
+      }
+
+      * {
+        background-color: transparent !important;
+      }
+    }
+  }
+
+  /* Nuclear option: Force ALL mat-form-fields to transparent in dark theme */
+  mat-form-field,
+  .mat-form-field {
+    &.mat-form-field-appearance-outline {
+      background-color: transparent !important;
+      background: transparent !important;
+    }
+  }
+}
+
+/* Fix placeholder text for light theme - make them dark/visible */
+input::placeholder,
+textarea::placeholder,
+.mat-input-element::placeholder,
+.mat-form-field-placeholder {
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+/* Light theme placeholder fixes */
+:root input::placeholder,
+:root textarea::placeholder,
+:root .mat-input-element::placeholder,
+:root .mat-form-field-placeholder {
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+.light-theme input::placeholder,
+.light-theme textarea::placeholder,
+.light-theme .mat-input-element::placeholder,
+.light-theme .mat-form-field-placeholder {
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+/* Comprehensive placeholder fix for all input types */
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="number"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="url"]::placeholder,
+input[type="search"]::placeholder {
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+/* Material form field placeholder overrides */
+.mat-form-field-infix input::placeholder,
+.mat-form-field-infix textarea::placeholder {
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+/* Fix for all dialog content */
+.dark-theme .mat-dialog-content {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-dialog-title {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for list items and general text */
+.dark-theme .mat-list-item {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-list-text {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for expansion panels */
+.dark-theme .mat-expansion-panel-header-title {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-expansion-panel-header-description {
+  color: var(--text-secondary) !important;
+}
+
+.dark-theme .mat-expansion-panel-content {
+  color: var(--text-primary) !important;
+}
+
+/* Material input elements - white text on transparent background for better UI */
+.dark-theme input,
+.dark-theme textarea,
+.dark-theme select,
+.dark-theme .mat-input-element,
+.dark-theme .mat-form-field input,
+.dark-theme .mat-form-field textarea,
+.dark-theme .mat-form-field-infix input,
+.dark-theme .mat-form-field-infix textarea {
+  color: rgba(255, 255, 255, 0.87) !important;
+  background-color: transparent !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.87) !important;
+}
+
+/* Fix for any stubborn autocomplete or browser styling - use dark theme colors */
+.dark-theme input:-webkit-autofill,
+.dark-theme input:-webkit-autofill:hover,
+.dark-theme input:-webkit-autofill:focus,
+.dark-theme input:-webkit-autofill:active {
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.87) !important;
+  -webkit-box-shadow: 0 0 0 30px var(--surface-color) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Global text visibility fixes for dark theme */
+.dark-theme * {
+  color: inherit;
+}
+
+.dark-theme body,
+.dark-theme html {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for all common text elements */
+.dark-theme p,
+.dark-theme span,
+.dark-theme div,
+.dark-theme label,
+.dark-theme h1, .dark-theme h2, .dark-theme h3, 
+.dark-theme h4, .dark-theme h5, .dark-theme h6,
+.dark-theme td, .dark-theme th,
+.dark-theme li, .dark-theme a {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for Material Design components text */
+.dark-theme .mat-button,
+.dark-theme .mat-raised-button,
+.dark-theme .mat-flat-button,
+.dark-theme .mat-stroked-button,
+.dark-theme .mat-icon-button,
+.dark-theme .mat-fab,
+.dark-theme .mat-mini-fab {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-button-wrapper {
+  color: inherit !important;
+}
+
+/* Fix for card content */
+.dark-theme .mat-card-content,
+.dark-theme .mat-card-title,
+.dark-theme .mat-card-subtitle,
+.dark-theme .mat-card-header-text {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for table text */
+.dark-theme .mat-table,
+.dark-theme .mat-header-cell,
+.dark-theme .mat-cell {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for menu items */
+.dark-theme .mat-menu-item {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for tabs */
+.dark-theme .mat-tab-label,
+.dark-theme .mat-tab-label-content {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for toolbar */
+.dark-theme .mat-toolbar {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for snackbar */
+.dark-theme .mat-snack-bar-container {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for any text that might be specifically set to black */
+.dark-theme [style*="color: black"],
+.dark-theme [style*="color: #000"],
+.dark-theme [style*="color: rgb(0, 0, 0)"] {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for step labels and content */
+.dark-theme .mat-step-label,
+.dark-theme .mat-step-header .mat-step-text-label,
+.dark-theme .mat-step-header .mat-step-optional {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for chip text */
+.dark-theme .mat-chip {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for progress bar text */
+.dark-theme .mat-progress-bar {
+  color: var(--text-primary) !important;
+}
+
+/* Enhanced button visibility for dark theme */
+.dark-theme .mat-raised-button,
+.dark-theme .mat-flat-button,
+.dark-theme .mat-stroked-button {
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dark-theme .mat-stroked-button {
+  border: 1px solid var(--border-color) !important;
+  background-color: transparent !important;
+}
+
+.dark-theme .mat-stroked-button:hover {
+  background-color: var(--hover-color) !important;
+}
+
+/* Fix for select dropdown visibility */
+.dark-theme .mat-select {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-select-panel {
+  background-color: var(--surface-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.dark-theme .mat-select-trigger {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-select-value-text {
+  color: var(--text-primary) !important;
+}
+
+/* Fix for radio buttons */
+.dark-theme .mat-radio-button {
+  color: var(--text-primary) !important;
+}
+
+.dark-theme .mat-radio-outer-circle {
+  border-color: var(--text-secondary) !important;
+}
+
+.dark-theme .mat-radio-inner-circle {
+  background-color: mat.get-color-from-palette($primary, 500) !important;
+}
+
+.dark-theme .mat-radio-checked .mat-radio-outer-circle {
+  border-color: mat.get-color-from-palette($primary, 500) !important;
+}
+
+/* Fix for checkboxes */
+.dark-theme .mat-checkbox-frame {
+  border-color: var(--text-secondary) !important;
+}
+
+.dark-theme .mat-checkbox-checked .mat-checkbox-background {
+  background-color: mat.get-color-from-palette($primary, 500) !important;
+}
+
+.dark-theme .mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: mat.get-color-from-palette($primary, 500) !important;
+}
+
+/* Fix for form field outlines and borders */
+.dark-theme .mat-form-field-appearance-outline .mat-form-field-outline-start,
+.dark-theme .mat-form-field-appearance-outline .mat-form-field-outline-gap,
+.dark-theme .mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-color: var(--border-color) !important;
+}
+
+.dark-theme .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-start,
+.dark-theme .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-gap,
+.dark-theme .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-end {
+  border-color: mat.get-color-from-palette($primary, 500) !important;
+}
+
+/* Fix for disabled elements */
+.dark-theme .mat-form-field-disabled .mat-form-field-label {
+  color: var(--text-tertiary) !important;
+}
+
+.dark-theme .mat-form-field-disabled .mat-form-field-underline {
+  background-color: var(--text-tertiary) !important;
+}
+
+/* Fix for icons in dark theme */
+.dark-theme .mat-icon {
+  color: var(--text-secondary) !important;
+}
+
+.dark-theme .mat-button .mat-icon,
+.dark-theme .mat-raised-button .mat-icon,
+.dark-theme .mat-flat-button .mat-icon,
+.dark-theme .mat-stroked-button .mat-icon {
+  color: inherit !important;
+}
+
+/* Fix for primary buttons to have proper contrast */
+.dark-theme .mat-flat-button.mat-primary,
+.dark-theme .mat-raised-button.mat-primary {
+  background-color: mat.get-color-from-palette($primary, 500) !important;
+  color: white !important;
+}
+
+.dark-theme .mat-flat-button.mat-primary .mat-button-wrapper,
+.dark-theme .mat-raised-button.mat-primary .mat-button-wrapper {
+  color: white !important;
+}
+
+/* Fix for accent buttons */
+.dark-theme .mat-flat-button.mat-accent,
+.dark-theme .mat-raised-button.mat-accent {
+  background-color: mat.get-color-from-palette($accent, 500) !important;
+  color: white !important;
+}
+
+/* Improve form field hover and focus states */
+.dark-theme .mat-form-field:hover .mat-form-field-outline-start,
+.dark-theme .mat-form-field:hover .mat-form-field-outline-gap,
+.dark-theme .mat-form-field:hover .mat-form-field-outline-end {
+  border-color: var(--text-secondary) !important;
+}
+
+/* ULTIMATE FIXES FOR DARK THEME DIALOG VISIBILITY */
+
+/* Force dialog backgrounds to be dark */
+.dark-theme .mat-dialog-container {
+  background-color: var(--surface-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Force all buttons in dialogs to be visible */
+.dark-theme .mat-dialog-actions button,
+.dark-theme .mat-dialog-content button {
+  background-color: #424242 !important;
+  color: white !important;
+  border: 1px solid #666 !important;
+}
+
+.dark-theme .mat-dialog-actions .mat-button,
+.dark-theme .mat-dialog-content .mat-button {
+  background-color: #424242 !important;
+  color: white !important;
+  border: 1px solid #666 !important;
+}
+
+.dark-theme .mat-dialog-actions .mat-flat-button,
+.dark-theme .mat-dialog-content .mat-flat-button {
+  background-color: #424242 !important;
+  color: white !important;
+}
+
+.dark-theme .mat-dialog-actions .mat-raised-button,
+.dark-theme .mat-dialog-content .mat-raised-button {
+  background-color: #424242 !important;
+  color: white !important;
+}
+
+/* Force primary buttons to be blue/visible */
+.dark-theme .mat-flat-button.mat-primary,
+.dark-theme .mat-raised-button.mat-primary,
+.dark-theme .mat-button.mat-primary {
+  background-color: #1976d2 !important;
+  color: white !important;
+}
+
+/* Force stroked buttons to have visible borders */
+.dark-theme .mat-stroked-button {
+  border: 2px solid #666 !important;
+  background-color: transparent !important;
+  color: white !important;
+}
+
+/* Force select dropdowns to be visible */
+.dark-theme .mat-select {
+  background-color: var(--surface-color) !important;
+  color: white !important;
+  border: 1px solid #666 !important;
+}
+
+.dark-theme .mat-select-arrow {
+  color: white !important;
+}
+
+.dark-theme .mat-select-value {
+  color: white !important;
+}
+
+/* Force radio buttons to be visible */
+.dark-theme .mat-radio-button .mat-radio-outer-circle {
+  border-color: white !important;
+  border-width: 2px !important;
+}
+
+.dark-theme .mat-radio-button .mat-radio-label-content {
+  color: white !important;
+}
+
+.dark-theme .mat-radio-button.mat-radio-checked .mat-radio-outer-circle {
+  border-color: #1976d2 !important;
+}
+
+.dark-theme .mat-radio-button.mat-radio-checked .mat-radio-inner-circle {
+  background-color: #1976d2 !important;
+}
+
+/* Force checkboxes to be visible */
+.dark-theme .mat-checkbox .mat-checkbox-frame {
+  border-color: white !important;
+  border-width: 2px !important;
+}
+
+.dark-theme .mat-checkbox .mat-checkbox-label {
+  color: white !important;
+}
+
+.dark-theme .mat-checkbox-checked .mat-checkbox-background,
+.dark-theme .mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: #1976d2 !important;
+}
+
+/* Force form field borders to be visible */
+.dark-theme .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #666 !important;
+}
+
+.dark-theme .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #666 !important;
+}
+
+.dark-theme .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #1976d2 !important;
+}
+
+/* Force labels to be visible */
+.dark-theme .mat-form-field-label {
+  color: #ccc !important;
+}
+
+.dark-theme .mat-form-field.mat-focused .mat-form-field-label {
+  color: #1976d2 !important;
+}
+
+/* Force all input text to be black as requested earlier */
+.dark-theme input,
+.dark-theme textarea,
+.dark-theme .mat-input-element {
+  color: black !important;
+  background-color: white !important;
+  -webkit-text-fill-color: black !important;
+}
+
+/* Force placeholders to be visible */
+.dark-theme input::placeholder,
+.dark-theme textarea::placeholder,
+.dark-theme .mat-input-element::placeholder {
+  color: #666 !important;
+}
+
+/* Force icons to be visible */
+.dark-theme .mat-icon {
+  color: #ccc !important;
+}
+
+/* Force option panels to be visible */
+.dark-theme .mat-option {
+  background-color: var(--surface-color) !important;
+  color: white !important;
+}
+
+.dark-theme .mat-option:hover {
+  background-color: #424242 !important;
+}
+
+.dark-theme .mat-option.mat-selected {
+  background-color: #1976d2 !important;
+  color: white !important;
+}
+
+/* SIMPLE DARK THEME TEXT FIXES - Only fix text visibility */
+.dark-theme {
+  /* Make text white on dark backgrounds for better visibility */
+  h1, h2, h3, h4, h5, h6,
+  p, span, div, label,
+  .mat-card-title, .mat-card-content,
+  .mat-list-item, .mat-menu-item,
+  .mat-tab-label, .mat-tab-label-content,
+  .mat-button, .mat-raised-button, .mat-flat-button,
+  .mat-form-field-label,
+  .mat-select-value, .mat-select-arrow,
+  .mat-option {
+    color: rgba(255, 255, 255, 0.87) !important;
+  }
+  
+  /* Fix specific form elements that need white text */
+  .section-header span,
+  .option-title,
+  .option-desc,
+  .mdc-label,
+  .mat-mdc-radio-button .mdc-label,
+  .mat-mdc-checkbox .mdc-label,
+  .password-section span,
+  .password-section div,
+  .password-section label {
+    color: rgba(255, 255, 255, 0.87) !important;
+  }
+  
+  /* Keep input text black on light backgrounds as requested */
+  input, textarea, .mat-input-element {
+    color: rgba(0, 0, 0, 0.87) !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    -webkit-text-fill-color: rgba(0, 0, 0, 0.87) !important;
+  }
+  
+  /* Make placeholders visible */
+  input::placeholder, textarea::placeholder, .mat-input-element::placeholder {
+    color: rgba(0, 0, 0, 0.54) !important;
+  }
+  
+  /* AGGRESSIVE FIX - Force all text to be white except inputs */
+  * {
+    color: rgba(255, 255, 255, 0.87) !important;
+  }
+  
+  /* Override inputs to keep them black on white */
+  input, textarea, .mat-input-element,
+  input[type="text"], input[type="email"], input[type="password"], 
+  input[type="number"], input[type="tel"], input[type="url"] {
+    color: rgba(0, 0, 0, 0.87) !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    -webkit-text-fill-color: rgba(0, 0, 0, 0.87) !important;
+  }
+  
+  /* Override placeholders */
+  input::placeholder, textarea::placeholder, .mat-input-element::placeholder,
+  input[type="text"]::placeholder, input[type="email"]::placeholder, 
+  input[type="password"]::placeholder, input[type="number"]::placeholder {
+    color: rgba(0, 0, 0, 0.54) !important;
+  }
+}
+
+/* GLOBAL OVERRIDE - Apply to all components regardless of view encapsulation */
+/* Make everything white text in dark theme EXCEPT password section and MDC labels */
+body.dark-theme *:not(.password-section):not(.password-section *):not(.section-header):not(.section-header *):not(.password-options):not(.password-options *):not(.option-content):not(.option-content *):not(.mdc-label) {
+  color: rgba(255, 255, 255, 0.87) !important;
+}
+
+/* Keep inputs black text but remove white background for better UI */
+body.dark-theme input:not([type="search"]):not(.mat-input-element), 
+body.dark-theme textarea, 
+body.dark-theme input[type="text"]:not(.mat-input-element), 
+body.dark-theme input[type="email"]:not(.mat-input-element), 
+body.dark-theme input[type="password"]:not(.mat-input-element), 
+body.dark-theme input[type="number"]:not(.mat-input-element), 
+body.dark-theme input[type="tel"]:not(.mat-input-element), 
+body.dark-theme input[type="url"]:not(.mat-input-element) {
+  color: rgba(255, 255, 255, 0.87) !important;
+  background-color: transparent !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.87) !important;
+}
+
+/* Fix select dropdown text to be WHITE on DARK background - comprehensive targeting */
+body.dark-theme .mat-select,
+body.dark-theme .mat-select-trigger,
+body.dark-theme .mat-select-value,
+body.dark-theme .mat-select-value-text,
+body.dark-theme .mat-form-field .mat-select-value,
+body.dark-theme .mat-form-field .mat-select,
+body.dark-theme .mat-form-field .mat-select-trigger,
+body.dark-theme .mat-form-field-infix .mat-select,
+body.dark-theme .mat-form-field-infix .mat-select-value,
+body.dark-theme .mat-form-field-infix .mat-select-trigger,
+body.dark-theme .mat-mdc-select,
+body.dark-theme .mat-mdc-select-value,
+body.dark-theme .mat-mdc-select-trigger,
+body.dark-theme .mdc-select__selected-text {
+  color: rgba(255, 255, 255, 0.87) !important;
+  background-color: transparent !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.87) !important;
+}
+
+/* CRITICAL FIX: Make mat-select placeholder visible in dark mode */
+body.dark-theme .mat-select-placeholder,
+body.dark-theme .mat-mdc-select-placeholder,
+body.dark-theme .mat-form-field .mat-select-placeholder,
+body.dark-theme .mat-form-field-infix .mat-select-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Fix mat-label for outline appearance */
+body.dark-theme .mat-form-field-appearance-outline .mat-form-field-label {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* SURGICAL FIX: Target the actual input element inside mat-select */
+body.dark-theme .mat-select-value-text span,
+body.dark-theme .mat-select-min-line {
+  color: rgba(255, 255, 255, 0.87) !important;
+}
+
+/* CRITICAL: Keep mat-form-field label always floated to prevent overlap */
+body.dark-theme .mat-form-field-appearance-outline .mat-form-field-label,
+body.dark-theme .mat-form-field-appearance-outline.mat-form-field-can-float .mat-form-field-label {
+  transform: translateY(-1.59375em) scale(0.75) !important;
+  width: 133.33333% !important;
+}
+
+/* Prevent label animation on focus */
+body.dark-theme .mat-form-field-appearance-outline.mat-focused .mat-form-field-label,
+body.dark-theme .mat-form-field-appearance-outline.mat-form-field-should-float .mat-form-field-label {
+  transform: translateY(-1.59375em) scale(0.75) !important;
+}
+
+/* Let search inputs and menu items use normal dark theme styling */
+body.dark-theme .mat-input-element,
+body.dark-theme input[type="search"],
+body.dark-theme .mat-menu-panel,
+body.dark-theme .mat-menu-item {
+  color: rgba(255, 255, 255, 0.87) !important;
+  background-color: transparent !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.87) !important;
+}
+
+/* Keep placeholders visible in inputs with lighter color for transparency */
+body.dark-theme input::placeholder, 
+body.dark-theme textarea::placeholder, 
+body.dark-theme .mat-input-element::placeholder,
+body.dark-theme input[type="text"]::placeholder, 
+body.dark-theme input[type="email"]::placeholder, 
+body.dark-theme input[type="password"]::placeholder, 
+body.dark-theme input[type="number"]::placeholder {
+  color: rgba(255, 255, 255, 0.54) !important;
+}
+
+/* Fix password section text - make it black since it has white background */
+/* ONLY target password-specific components, NOT all dialogs */
+body.dark-theme .password-section,
+body.dark-theme .password-section *,
+body.dark-theme .section-header,
+body.dark-theme .section-header *,
+body.dark-theme .password-options,
+body.dark-theme .password-options *,
+body.dark-theme .option-content,
+body.dark-theme .option-content *,
+body.dark-theme .option-title,
+body.dark-theme .option-desc,
+body.dark-theme .force-change-checkbox,
+body.dark-theme .force-change-checkbox *,
+body.dark-theme .force-change-checkbox label {
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
+/* Fix radio and checkbox labels - they need dark text because Material renders them on light backgrounds */
+body.dark-theme .mat-mdc-radio-button .mdc-label,
+body.dark-theme .mat-mdc-checkbox .mdc-label,
+body.dark-theme .mdc-form-field .mdc-label {
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
+/* PROPER DARK THEME DIALOG STYLING - Dark backgrounds with white text */
+body.dark-theme .mat-dialog-container,
+body.dark-theme .mat-mdc-dialog-container,
+body.dark-theme .mdc-dialog {
+  background-color: var(--surface-color) !important;
+}
+
+/* Make dialog text WHITE in dark theme */
+body.dark-theme .mat-dialog-content,
+body.dark-theme .mat-dialog-title,
+body.dark-theme .mat-mdc-dialog-content,
+body.dark-theme .mat-mdc-dialog-title,
+body.dark-theme .mat-dialog-container h1,
+body.dark-theme .mat-dialog-container h2,
+body.dark-theme .mat-dialog-container h3,
+body.dark-theme .mat-dialog-container h4,
+body.dark-theme .mat-dialog-container h5,
+body.dark-theme .mat-dialog-container h6,
+body.dark-theme .mat-dialog-container p,
+body.dark-theme .mat-dialog-container span:not(.mdc-label),
+body.dark-theme .mat-dialog-container div:not(.mdc-form-field),
+body.dark-theme .mat-dialog-container label:not(.mdc-label) {
+  color: var(--text-primary) !important;
+}
+
+/* Additional specific targeting for the checkbox label text */
+body.dark-theme .mat-mdc-checkbox .mdc-form-field .mdc-label,
+body.dark-theme .mat-mdc-checkbox-1 label,
+body.dark-theme [for="mat-mdc-checkbox-1-input"],
+body.dark-theme label[for*="mat-mdc-checkbox"],
+body.dark-theme .mdc-checkbox + label,
+body.dark-theme .mdc-form-field label {
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
+/* Fix button visibility in dark theme - professional approach */
+body.dark-theme .mat-mdc-button,
+body.dark-theme .mat-mdc-raised-button,
+body.dark-theme .mat-mdc-outlined-button,
+body.dark-theme .mat-mdc-unelevated-button {
+  /* Default buttons - dark background with white text */
+  background-color: #424242 !important;
+  color: #ffffff !important;
+  border: 1px solid #666666 !important;
+}
+
+body.dark-theme .mat-mdc-button.mat-primary,
+body.dark-theme .mat-mdc-raised-button.mat-primary,
+body.dark-theme .mat-mdc-unelevated-button.mat-primary {
+  /* Primary buttons - blue background with white text */
+  background-color: #1976d2 !important;
+  color: #ffffff !important;
+  border: 1px solid #1976d2 !important;
+}
+
+body.dark-theme .mat-mdc-outlined-button {
+  /* Outlined buttons - transparent background with white text and border */
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border: 2px solid #666666 !important;
+}
+
+body.dark-theme .mat-mdc-outlined-button.mat-primary {
+  /* Primary outlined buttons */
+  background-color: transparent !important;
+  color: #1976d2 !important;
+  border: 2px solid #1976d2 !important;
+}
+
+/* Hover states for better UX */
+body.dark-theme .mat-mdc-button:hover,
+body.dark-theme .mat-mdc-raised-button:hover,
+body.dark-theme .mat-mdc-unelevated-button:hover {
+  background-color: #555555 !important;
+}
+
+body.dark-theme .mat-mdc-outlined-button:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+body.dark-theme .mat-mdc-button.mat-primary:hover,
+body.dark-theme .mat-mdc-raised-button.mat-primary:hover,
+body.dark-theme .mat-mdc-unelevated-button.mat-primary:hover {
+  background-color: #1565c0 !important;
+}
+
+/* Fix button text specifically */
+body.dark-theme .mat-mdc-button .mdc-button__label,
+body.dark-theme .mat-mdc-raised-button .mdc-button__label,
+body.dark-theme .mat-mdc-outlined-button .mdc-button__label,
+body.dark-theme .mat-mdc-unelevated-button .mdc-button__label {
+  color: inherit !important;
+}
+
+/* Fix cancel button text - make it white on dark background for better visibility */
+body.dark-theme .mat-mdc-button:not(.mat-primary),
+body.dark-theme .mat-mdc-outlined-button:not(.mat-primary) {
+  color: rgba(255, 255, 255, 0.87) !important;
+  background-color: #424242 !important;
+  border: 1px solid #666666 !important;
+}
+
+body.dark-theme .mat-mdc-button:not(.mat-primary) .mdc-button__label,
+body.dark-theme .mat-mdc-outlined-button:not(.mat-primary) .mdc-button__label,
+body.dark-theme .mat-mdc-button:not(.mat-primary) span,
+body.dark-theme .mat-mdc-outlined-button:not(.mat-primary) span {
+  color: rgba(255, 255, 255, 0.87) !important;
+}
+
+/* Fix dialog section headers and labels - make them black for white backgrounds */
+body.dark-theme .mat-dialog-content h3,
+body.dark-theme .mat-dialog-content h4,
+body.dark-theme .mat-dialog-content .section-title,
+body.dark-theme .mat-dialog-content .form-section-title,
+body.dark-theme .mat-dialog-content .client-assignment,
+body.dark-theme .mat-dialog-content label:not(.mdc-label),
+body.dark-theme .mat-dialog-container h3,
+body.dark-theme .mat-dialog-container h4,
+body.dark-theme .mat-dialog-container .section-title,
+body.dark-theme .mat-dialog-container .form-section-title,
+body.dark-theme .mat-dialog-container .client-assignment,
+body.dark-theme .mat-dialog-container label:not(.mdc-label) {
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
+/* ULTIMATE FIX - Force upload area text and icon to be black with maximum specificity */
+html body.dark-theme .mat-dialog-container app-add-device-dialog .upload-area .upload-placeholder .upload-text,
+html body.dark-theme .mat-dialog-container app-add-device-dialog .upload-area .upload-placeholder .upload-hint,
+html body.dark-theme .mat-dialog-container app-add-device-dialog .upload-area .upload-placeholder .upload-icon,
+html body.dark-theme .mat-dialog-container app-add-device-dialog .upload-area .upload-placeholder mat-icon,
+html body.dark-theme .mat-dialog-container app-add-device-dialog .form-field .field-label,
+html body.dark-theme .mat-dialog-container .upload-text,
+html body.dark-theme .mat-dialog-container .upload-hint,
+html body.dark-theme .mat-dialog-container .upload-icon,
+html body.dark-theme .mat-dialog-container .field-label,
+html body.dark-theme .upload-text,
+html body.dark-theme .upload-hint,
+html body.dark-theme .upload-icon {
+  color: #374151 !important;
+  -webkit-text-fill-color: #374151 !important;
+}
+
+/* Additional targeting for Material icons in upload area */
+html body.dark-theme .mat-dialog-container app-add-device-dialog mat-icon.upload-icon,
+html body.dark-theme .mat-dialog-container mat-icon.upload-icon,
+html body.dark-theme mat-icon.upload-icon {
+  color: #9ca3af !important;
+  -webkit-text-fill-color: #9ca3af !important;
+}
+
+/* COMPREHENSIVE DARK THEME DIALOG FIXES */
+/* Override any hardcoded white/light backgrounds in dialogs */
+.dark-theme .mat-dialog-container,
+.dark-theme .mat-dialog-container * {
+  /* Catch any elements with hardcoded backgrounds */
+  &[style*="background: white"],
+  &[style*="background: #fff"],
+  &[style*="background-color: white"],
+  &[style*="background-color: #fff"],
+  &[style*="background: rgb(255, 255, 255)"],
+  &[style*="background-color: rgb(255, 255, 255)"] {
+    background: var(--surface-color) !important;
+    background-color: var(--surface-color) !important;
+  }
+}
+
+/* Fix for all buttons in dialogs to ensure visibility */
+.dark-theme .mat-dialog-container button,
+.dark-theme button {
+  /* Override any light backgrounds */
+  &:not(.mat-raised-button):not(.mat-flat-button):not([color="primary"]):not([color="accent"]):not([color="warn"]) {
+    background-color: var(--surface-color) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+  }
+}
+
+/* Ensure all dialog text is visible */
+.dark-theme .mat-dialog-container {
+  h1, h2, h3, h4, h5, h6, p, span, div, label, a {
+    color: var(--text-primary) !important;
+  }
+}
+
+/* Fix for search fields and input groups in dialogs */
+.dark-theme .mat-dialog-container .mat-form-field-wrapper {
+  background-color: transparent !important;
+}
+
+/* Fix for any remaining hardcoded light colors */
+.dark-theme *:not(input):not(textarea):not(.mat-input-element) {
+  &[style*="color: #666"],
+  &[style*="color: #333"],
+  &[style*="color: rgb(102, 102, 102)"],
+  &[style*="color: rgb(51, 51, 51)"] {
+    color: var(--text-primary) !important;
+  }
+}
+
+/* Snackbar / Toast Message Dark Mode Fix */
+.dark-theme .mat-mdc-snack-bar-container,
+.dark-theme .mdc-snackbar,
+.dark-theme .mat-snack-bar-container {
+  background-color: #323232 !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.dark-theme .mat-mdc-snack-bar-container .mdc-snackbar__surface,
+.dark-theme .mdc-snackbar__surface {
+  background-color: #323232 !important;
+}
+
+.dark-theme .mat-mdc-snack-bar-container .mdc-snackbar__label,
+.dark-theme .mat-mdc-snack-bar-container .mat-simple-snack-bar-content,
+.dark-theme .mdc-snackbar__label,
+.dark-theme .mat-simple-snack-bar-content {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.dark-theme .mat-mdc-snack-bar-container .mat-mdc-button,
+.dark-theme .mat-mdc-snack-bar-container button,
+.dark-theme .mdc-snackbar button {
+  color: #90caf9 !important;
+}
+
+.dark-theme .mat-mdc-snack-bar-container .mat-mdc-button .mdc-button__label,
+.dark-theme .mdc-snackbar .mdc-button__label {
+  color: #90caf9 !important;
+}

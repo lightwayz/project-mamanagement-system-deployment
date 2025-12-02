@@ -1,0 +1,150 @@
+<div class="dashboard-container">
+  <div class="welcome-section">
+    <h1>{{ getWelcomeMessage() }}, {{ currentUser?.name }}!</h1>
+    <p>Welcome to your Hometronix dashboard</p>
+  </div>
+
+  <div class="stats-grid" *ngIf="!isLoading">
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>work</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ stats.total_projects }}</h3>
+            <p>Total Projects</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon active">
+            <mat-icon>trending_up</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ stats.active_projects }}</h3>
+            <p>Active Projects</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>people</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ stats.total_clients }}</h3>
+            <p>Total Clients</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon revenue">
+            <mat-icon>attach_money</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ stats.monthly_revenue | appCurrency }}</h3>
+            <p>Monthly Revenue</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" *ngIf="currentUser?.role === 'admin' || currentUser?.role === 'salesperson'">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon pending">
+            <mat-icon>description</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ stats.pending_proposals }}</h3>
+            <p>Pending Proposals</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" *ngIf="currentUser?.role === 'admin'">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon warning">
+            <mat-icon>warning</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ stats.low_stock_items }}</h3>
+            <p>Low Stock Items</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" *ngIf="currentUser?.role === 'admin'">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon users">
+            <mat-icon>person</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ stats.total_users }}</h3>
+            <p>Total Users</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon devices">
+            <mat-icon>devices</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3>{{ stats.total_devices }}</h3>
+            <p>Total Devices</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="quick-actions">
+    <h2>Quick Actions</h2>
+    <div class="action-buttons">
+      <button mat-raised-button color="primary" routerLink="/projects" *ngIf="currentUser?.role === 'admin' || currentUser?.role === 'salesperson'">
+        <mat-icon>add</mat-icon>
+        Create Project
+      </button>
+      <button mat-raised-button color="accent" routerLink="/clients" *ngIf="currentUser?.role === 'admin' || currentUser?.role === 'salesperson'">
+        <mat-icon>person_add</mat-icon>
+        Add Client
+      </button>
+      <button mat-raised-button routerLink="/inventory">
+        <mat-icon>inventory</mat-icon>
+        View Inventory
+      </button>
+      <button mat-raised-button color="accent" (click)="openExcelImport()" *ngIf="currentUser?.role === 'admin'">
+        <mat-icon>upload_file</mat-icon>
+        Import Inventory
+      </button>
+      <button mat-raised-button routerLink="/reports" *ngIf="currentUser?.role === 'admin' || currentUser?.role === 'salesperson'">
+        <mat-icon>assessment</mat-icon>
+        View Reports
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,201 @@
+<div class="build-system-details-dialog">
+  <div class="dialog-header">
+    <mat-icon class="header-icon">build_circle</mat-icon>
+    <h2>Build System Details</h2>
+    <button mat-icon-button (click)="close()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+    <!-- Basic Information -->
+    <mat-card class="details-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon class="section-icon">info</mat-icon>
+          System Information
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Name:</span>
+            <span class="info-value">{{ buildSystem.name || 'No Name' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Status:</span>
+            <mat-chip-set>
+              <mat-chip [class]="buildSystem.is_active ? 'status-active' : 'status-inactive'">
+                {{ buildSystem.is_active ? 'Active' : 'Inactive' }}
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Total Cost:</span>
+            <span class="info-value cost">{{ formatCurrency(getDisplayTotalCost()) }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Created By:</span>
+            <span class="info-value">{{ buildSystem.creator?.name || 'Unknown' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Created Date:</span>
+            <span class="info-value">{{ buildSystem.created_at | date:'medium' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Total Devices:</span>
+            <span class="info-value">{{ getTotalDeviceCount() }}</span>
+          </div>
+        </div>
+        <div class="description" *ngIf="buildSystem?.description">
+          <span class="info-label">Description:</span>
+          <p class="description-text">{{ buildSystem.description }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Locations and Devices -->
+    <mat-card class="details-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon class="section-icon">location_on</mat-icon>
+          Locations & Equipment
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="buildSystem?.locations && (buildSystem?.locations?.length || 0) > 0; else noLocations">
+          <mat-accordion multi="true">
+            <mat-expansion-panel *ngFor="let location of buildSystem?.locations; let i = index" class="location-panel">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon class="location-icon">room</mat-icon>
+                  {{ location?.name || 'Unnamed Location' }}
+                </mat-panel-title>
+                <mat-panel-description>
+                  {{ getTotalLocationDeviceCount(location) }} devices •
+                  {{ formatCurrency(getTotalLocationCost(location)) }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <div class="location-content">
+                <p *ngIf="location?.description" class="location-description">
+                  {{ location?.description }}
+                </p>
+
+                <!-- Main Location Devices -->
+                <div *ngIf="location?.devices && (location?.devices?.length || 0) > 0" class="devices-list">
+                  <h4>Main Area Equipment:</h4>
+                  <div class="device-grid">
+                    <div *ngFor="let device of location?.devices" class="device-card">
+                      <div class="device-info">
+                        <div class="device-name">{{ device?.device?.name || 'Unknown Device' }}</div>
+                        <div class="device-details">
+                          <span class="device-brand">{{ device?.device?.brand || 'N/A' }}</span>
+                          <span class="device-model" *ngIf="device?.device?.model"> • {{ device?.device?.model }}</span>
+                        </div>
+                        <div class="device-category" *ngIf="device?.device?.category">
+                          <mat-chip-set>
+                            <mat-chip class="category-chip">{{ device?.device?.category }}</mat-chip>
+                          </mat-chip-set>
+                        </div>
+                      </div>
+                      <div class="device-pricing">
+                        <div class="quantity">Qty: {{ device?.quantity || 0 }}</div>
+                        <div class="unit-price">{{ formatCurrency(device?.unit_price || 0) }}</div>
+                        <div class="total-price">Total: {{ formatCurrency((device?.quantity || 0) * (device?.unit_price || 0)) }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sub-Locations -->
+                <div *ngIf="location?.subLocations && (location?.subLocations?.length || 0) > 0" class="sub-locations-section">
+                  <h4 class="sub-locations-title">
+                    <mat-icon>subdirectory_arrow_right</mat-icon>
+                    Sub-Areas
+                  </h4>
+
+                  <div class="sub-locations-container">
+                    <mat-card *ngFor="let subLocation of location?.subLocations" class="sub-location-card">
+                      <mat-card-header>
+                        <mat-card-title class="sub-location-header">
+                          <mat-icon class="sub-location-icon">location_on</mat-icon>
+                          {{ subLocation?.name || 'Unnamed Sub-Location' }}
+                        </mat-card-title>
+                        <mat-card-subtitle *ngIf="subLocation?.description">
+                          {{ subLocation?.description }}
+                        </mat-card-subtitle>
+                      </mat-card-header>
+
+                      <mat-card-content *ngIf="subLocation?.devices && (subLocation?.devices?.length || 0) > 0">
+                        <div class="sub-location-devices">
+                          <div *ngFor="let device of subLocation?.devices" class="device-card sub-device-card">
+                            <div class="device-info">
+                              <div class="device-name">{{ device?.device?.name || 'Unknown Device' }}</div>
+                              <div class="device-details">
+                                <span class="device-brand">{{ device?.device?.brand || 'N/A' }}</span>
+                                <span class="device-model" *ngIf="device?.device?.model"> • {{ device?.device?.model }}</span>
+                              </div>
+                              <div class="device-category" *ngIf="device?.device?.category">
+                                <mat-chip-set>
+                                  <mat-chip class="category-chip">{{ device?.device?.category }}</mat-chip>
+                                </mat-chip-set>
+                              </div>
+                            </div>
+                            <div class="device-pricing">
+                              <div class="quantity">Qty: {{ device?.quantity || 0 }}</div>
+                              <div class="unit-price">{{ formatCurrency(device?.unit_price || 0) }}</div>
+                              <div class="total-price">Total: {{ formatCurrency((device?.quantity || 0) * (device?.unit_price || 0)) }}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                </div>
+
+                <!-- No devices message -->
+                <div *ngIf="getTotalLocationDeviceCount(location) === 0" class="no-data">
+                  <p>No devices configured for this location.</p>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+        <ng-template #noLocations>
+          <p class="no-data">No locations configured for this build system.</p>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Cost Summary -->
+    <mat-card class="details-card cost-summary-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon class="section-icon">attach_money</mat-icon>
+          Cost Summary
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="cost-breakdown">
+          <div *ngFor="let location of buildSystem?.locations" class="location-cost">
+            <span class="location-name">{{ location?.name || 'Unnamed Location' }}:</span>
+            <span class="location-total">{{ formatCurrency(getTotalLocationCost(location)) }}</span>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="total-cost">
+            <span class="total-label">Total System Cost:</span>
+            <span class="total-amount">{{ formatCurrency(getDisplayTotalCost()) }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="dialog-actions">
+    <button mat-raised-button color="primary" (click)="close()">
+      <mat-icon>check</mat-icon>
+      Close
+    </button>
+  </div>
+</div>

@@ -1,0 +1,550 @@
+.build-systems-container {
+  padding: 24px;
+  min-height: calc(100vh - 80px);
+  background-color: var(--background-color);
+}
+
+/* Header Section */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  gap: 24px;
+
+  .header-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+
+    .header-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
+      color: white;
+      flex-shrink: 0;
+
+      mat-icon {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    .header-text {
+      h1 {
+        margin: 0 0 8px 0;
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        line-height: 1.2;
+      }
+
+      p {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 1rem;
+        line-height: 1.4;
+        max-width: 500px;
+      }
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+
+    .create-button {
+      min-width: 180px;
+      height: 48px;
+      border-radius: 8px;
+      font-weight: 500;
+
+      mat-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+/* Filters Section */
+.filters-section {
+  margin-bottom: 24px;
+
+  .filters-card {
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+
+    .filters-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 24px;
+      flex-wrap: wrap;
+
+      .search-field {
+        flex: 1;
+        min-width: 250px;
+      }
+
+      .status-filter {
+        min-width: 140px;
+      }
+
+      .clear-filters-btn {
+        height: 48px;
+        border-radius: 8px;
+
+        mat-icon {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+}
+
+/* Table Container */
+.table-container {
+  .table-card {
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--surface-color);
+
+      h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .table-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+    }
+
+    .table-wrapper {
+      position: relative;
+      min-height: 400px;
+
+      .build-systems-table {
+        width: 100%;
+        background: var(--surface-color);
+
+        .mat-header-cell {
+          font-weight: 600;
+          color: var(--text-primary);
+          border-bottom: 1px solid var(--border-color);
+          padding: 16px 12px;
+
+          &.sortable-header {
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
+
+            &:hover {
+              background-color: var(--hover-color);
+            }
+
+            .header-content {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+
+              .sort-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+                color: var(--text-secondary);
+                transition: color 0.2s;
+              }
+            }
+          }
+        }
+
+        .mat-cell {
+          padding: 16px 12px;
+          border-bottom: 1px solid var(--border-color);
+          color: var(--text-primary);
+          vertical-align: top;
+        }
+
+        .build-system-row {
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: var(--hover-color);
+          }
+        }
+
+        // Column-specific styling
+        .name-cell {
+          .name {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+          }
+
+          .description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.3;
+            max-width: 300px;
+          }
+        }
+
+        .count-badge {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          background: var(--hover-color);
+          padding: 4px 12px;
+          border-radius: 16px;
+          width: fit-content;
+
+          .count-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+          }
+
+          span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+          }
+        }
+
+        .cost-amount {
+          font-weight: 600;
+          font-size: 0.95rem;
+          color: var(--text-primary);
+        }
+
+        .creator-info {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .creator-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+            color: var(--text-secondary);
+          }
+
+          span {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+          }
+        }
+
+        .date-text {
+          font-size: 0.875rem;
+          color: var(--text-secondary);
+        }
+
+        .status-active {
+          background-color: #e8f5e8;
+          color: #2e7d32;
+
+          .status-icon {
+            color: #2e7d32;
+          }
+        }
+
+        .status-inactive {
+          background-color: #ffeaa7;
+          color: #e17055;
+
+          .status-icon {
+            color: #e17055;
+          }
+        }
+
+        .status-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+          margin-right: 4px;
+        }
+
+        .actions-menu {
+          .actions-button {
+            color: var(--text-secondary);
+            transition: color 0.2s;
+
+            &:hover {
+              color: var(--text-primary);
+            }
+          }
+
+          .delete-action {
+            color: #f44336;
+
+            mat-icon {
+              color: #f44336;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* States */
+.no-data-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 48px 24px;
+
+  .no-data-content {
+    text-align: center;
+    max-width: 400px;
+
+    .no-data-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      margin: 0 0 16px 0;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    p {
+      margin: 0 0 24px 0;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .create-first-button {
+      border-radius: 8px;
+      font-weight: 500;
+
+      mat-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 24px;
+
+  p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+}
+
+/* Pagination */
+::ng-deep .mat-paginator {
+  background: var(--surface-color);
+  border-top: 1px solid var(--border-color);
+  color: var(--text-primary);
+
+  .mat-paginator-page-size-select-trigger {
+    color: var(--text-primary);
+  }
+
+  .mat-form-field-underline {
+    background-color: var(--border-color);
+  }
+
+  .mat-select-arrow {
+    color: var(--text-secondary);
+  }
+}
+
+/* Dark theme specific adjustments - with !important to override Material */
+.dark-theme {
+  .build-systems-container {
+    .status-active,
+    mat-chip.status-active,
+    .mat-chip.status-active {
+      background-color: rgba(76, 175, 80, 0.15) !important;
+      color: #81c784 !important;
+
+      .status-icon,
+      mat-icon,
+      .mat-chip-text,
+      span {
+        color: #81c784 !important;
+      }
+    }
+
+    .status-inactive,
+    mat-chip.status-inactive,
+    .mat-chip.status-inactive {
+      background-color: rgba(255, 152, 0, 0.15) !important;
+      color: #ffb74d !important;
+
+      .status-icon,
+      mat-icon,
+      .mat-chip-text,
+      span {
+        color: #ffb74d !important;
+      }
+    }
+  }
+
+  .count-badge {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* CRITICAL FIX: Status dropdown dark theme - Surgical approach with ::ng-deep */
+::ng-deep .dark-theme {
+  /* Target the status filter specifically */
+  .filters-section .status-filter,
+  .status-filter {
+    background-color: transparent !important;
+
+    /* Force transparent on ALL possible background-holding elements */
+    &.mat-form-field,
+    .mat-form-field {
+      background-color: transparent !important;
+    }
+
+    .mat-form-field-wrapper {
+      background-color: transparent !important;
+    }
+
+    .mat-form-field-flex {
+      background-color: transparent !important;
+    }
+
+    .mat-form-field-infix {
+      background-color: transparent !important;
+    }
+
+    /* Target outline appearance specifically */
+    &.mat-form-field-appearance-outline,
+    .mat-form-field-appearance-outline {
+      background-color: transparent !important;
+
+      .mat-form-field-outline {
+        background-color: transparent !important;
+      }
+
+      .mat-form-field-wrapper {
+        background-color: transparent !important;
+      }
+
+      .mat-form-field-flex {
+        background-color: transparent !important;
+      }
+
+      .mat-form-field-infix {
+        background-color: transparent !important;
+      }
+    }
+
+    /* Ensure select value text is white */
+    .mat-select-value,
+    .mat-select-value-text,
+    .mat-select-trigger {
+      color: rgba(255, 255, 255, 0.95) !important;
+      background-color: transparent !important;
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .build-systems-container {
+    padding: 16px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+
+    .header-content {
+      .header-icon {
+        width: 48px;
+        height: 48px;
+
+        mat-icon {
+          font-size: 24px;
+          width: 24px;
+          height: 24px;
+        }
+      }
+
+      .header-text h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    .header-actions {
+      align-self: stretch;
+
+      .create-button {
+        width: 100%;
+      }
+    }
+  }
+
+  .filters-section .filters-card .filters-content {
+    flex-direction: column;
+    align-items: stretch;
+
+    .search-field,
+    .status-filter {
+      min-width: unset;
+    }
+  }
+
+  // Hide some columns on mobile
+  .build-systems-table {
+    .mat-column-description,
+    .mat-column-creator,
+    .mat-column-created_at {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .build-systems-table {
+    .mat-column-locations_count {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,80 @@
+<div class="export-dialog">
+  <div mat-dialog-title class="dialog-header">
+    <mat-icon>picture_as_pdf</mat-icon>
+    <h2>Export Project Proposal</h2>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <div class="project-info">
+      <h3>{{ data.project.name || 'Untitled Project' }}</h3>
+      <p class="project-summary">{{ getProjectSummary() }}</p>
+      <p class="project-client" *ngIf="data.project.client?.name">
+        <strong>Client:</strong> {{ data.project.client?.name }}
+      </p>
+      <p class="project-cost">
+        <strong>Total Cost:</strong> ₦{{ (data.project.total_cost || 0).toLocaleString() }}
+      </p>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="export-options">
+      <h4>Export Options</h4>
+      
+      <mat-checkbox 
+        [(ngModel)]="exportOptions.includeCover"
+        [disabled]="isGenerating">
+        Include Cover Page
+      </mat-checkbox>
+
+      <mat-checkbox 
+        [(ngModel)]="exportOptions.includeOverview"
+        [disabled]="isGenerating">
+        Include Project Overview
+      </mat-checkbox>
+
+      <mat-checkbox 
+        [(ngModel)]="exportOptions.includeScopeOfWork"
+        [disabled]="isGenerating">
+        Include Scope of Work
+      </mat-checkbox>
+
+      <mat-checkbox 
+        [(ngModel)]="exportOptions.includeEquipmentPricing"
+        [disabled]="isGenerating">
+        Include Equipment & Pricing
+      </mat-checkbox>
+
+      <mat-checkbox 
+        [(ngModel)]="exportOptions.includeTermsConditions"
+        [disabled]="isGenerating">
+        Include Terms & Conditions
+      </mat-checkbox>
+    </div>
+
+    <div class="generation-progress" *ngIf="isGenerating">
+      <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
+      <p>Generating PDF proposal...</p>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-actions">
+    <button 
+      mat-button 
+      color="primary" 
+      (click)="onCancel()"
+      [disabled]="isGenerating">
+      Cancel
+    </button>
+
+    <button 
+      mat-raised-button 
+      color="primary" 
+      (click)="generatePDF()"
+      [disabled]="isGenerating">
+      <mat-icon *ngIf="!isGenerating">download</mat-icon>
+      <mat-icon *ngIf="isGenerating">hourglass_empty</mat-icon>
+      {{ isGenerating ? 'Generating...' : 'Generate PDF' }}
+    </button>
+  </mat-dialog-actions>
+</div>

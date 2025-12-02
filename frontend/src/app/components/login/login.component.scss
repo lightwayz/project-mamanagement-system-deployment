@@ -1,0 +1,38 @@
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 16px;
+}
+
+.header-image {
+  background: linear-gradient(45deg, #2196F3, #21CBF3);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-button {
+  height: 48px;
+  margin-top: 16px;
+  position: relative;
+  
+  mat-spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+mat-form-field {
+  margin-bottom: 16px;
+}

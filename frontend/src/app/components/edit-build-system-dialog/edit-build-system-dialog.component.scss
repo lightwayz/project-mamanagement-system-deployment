@@ -1,0 +1,616 @@
+.edit-build-system-dialog {
+  min-width: 900px;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow: hidden;
+  background: var(--surface-color);
+  border-radius: 16px;
+  position: relative;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 32px 16px;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  color: white;
+  margin: -24px -24px 0 -24px;
+  position: relative;
+
+  .header-icon {
+    color: white;
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h2 {
+    margin: 0;
+    color: white;
+    font-weight: 600;
+    font-size: 24px;
+    flex: 1;
+  }
+
+  .close-button {
+    color: white;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+.dialog-content {
+  padding: 0 0 80px 0;
+  max-height: 70vh;
+  overflow: hidden;
+}
+
+.build-system-stepper {
+  background: transparent;
+  padding: 24px 32px;
+
+  ::ng-deep {
+    .mat-stepper-horizontal-line {
+      border-top-color: var(--border-color);
+    }
+
+    .mat-step-header {
+      .mat-step-icon {
+        background-color: #ff9800;
+        color: white;
+      }
+
+      .mat-step-icon-selected {
+        background-color: #f57c00;
+      }
+
+      .mat-step-label {
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.step-content {
+  padding: 24px 0;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.form-section {
+  margin-bottom: 32px;
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 24px 0;
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 600;
+
+    mat-icon {
+      color: #ff9800;
+      font-size: 24px;
+    }
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.form-row {
+  margin-bottom: 20px;
+
+  .form-field {
+    width: 100%;
+  }
+}
+
+.status-checkbox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--hover-color);
+
+  .checkbox-label {
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .checkbox-description {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+}
+
+.locations-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.location-card {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--surface-color);
+
+  mat-card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    margin: -16px -16px 16px -16px;
+    padding: 16px;
+    border-radius: 12px 12px 0 0;
+
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+      font-size: 16px;
+      margin: 0;
+
+      .location-icon {
+        color: #ff9800;
+      }
+
+      .location-cost {
+        margin-left: auto;
+        color: #4caf50;
+        font-weight: 600;
+      }
+    }
+
+    .remove-location-btn {
+      color: #f44336;
+
+      &:disabled {
+        color: var(--text-secondary);
+      }
+    }
+  }
+
+  mat-card-content {
+    background: var(--surface-color);
+  }
+}
+
+.location-form {
+  .location-name-field,
+  .location-description-field {
+    width: 100%;
+  }
+}
+
+.device-selection {
+  margin-top: 24px;
+
+  h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 16px 0;
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 500;
+
+    mat-icon {
+      color: #2196f3;
+      font-size: 20px;
+    }
+  }
+}
+
+.device-search {
+  margin-bottom: 16px;
+
+  .search-field {
+    width: 100%;
+  }
+}
+
+.devices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.device-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--surface-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #2196f3;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+  }
+
+  .device-info {
+    flex: 1;
+
+    .device-name {
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .device-details {
+      color: var(--text-secondary);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .device-price {
+      color: #4caf50;
+      font-weight: 600;
+      font-size: 13px;
+    }
+  }
+
+  .add-icon {
+    color: #4caf50;
+    font-size: 24px;
+  }
+}
+
+.loading-devices {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.selected-devices {
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px;
+
+  h5 {
+    margin: 0 0 12px 0;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.selected-device {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 8px;
+  border: 1px solid #4caf50;
+  border-radius: 8px;
+  background: rgba(76, 175, 80, 0.05);
+
+  .device-details {
+    flex: 1;
+
+    .device-name {
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .device-brand {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+  }
+
+  .device-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .quantity-field,
+    .price-field {
+      width: 80px;
+    }
+
+    .remove-device-btn {
+      color: #f44336;
+    }
+  }
+}
+
+.review-section {
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 24px 0;
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 600;
+
+    mat-icon {
+      color: #2196f3;
+      font-size: 24px;
+    }
+  }
+}
+
+.review-card {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--surface-color);
+}
+
+.review-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+
+  .label {
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .value {
+    color: var(--text-primary);
+    font-weight: 500;
+
+    &.cost {
+      color: #4caf50;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+}
+
+.status-active {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+.status-inactive {
+  background-color: #f44336 !important;
+  color: white !important;
+}
+
+.description-review {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+
+  strong {
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+    padding: 12px;
+    background: var(--hover-color);
+    border-radius: 8px;
+    border-left: 4px solid #ff9800;
+  }
+}
+
+.step-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+
+  button {
+    min-width: 120px;
+    height: 40px;
+    border-radius: 20px;
+    font-weight: 500;
+
+    mat-icon {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+
+    mat-spinner {
+      margin-right: 8px;
+    }
+  }
+}
+
+.dialog-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 32px 24px;
+  margin: 0;
+  background: #fafafa;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: center;
+
+  button {
+    min-width: 100px;
+    height: 40px;
+    border-radius: 20px;
+    font-weight: 500;
+
+    mat-icon {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+  }
+}
+
+// Dark theme
+:host-context(.dark-theme) {
+  .edit-build-system-dialog {
+    background: var(--surface-color);
+  }
+
+  .location-card {
+    background: var(--surface-color) !important;
+    border-color: var(--border-color);
+
+    ::ng-deep {
+      .mat-mdc-card,
+      .mat-card {
+        background: var(--surface-color) !important;
+      }
+
+      mat-card-header,
+      .mat-mdc-card-header {
+        background: var(--header-bg, #2a2a2a) !important;
+      }
+
+      mat-card-content,
+      .mat-mdc-card-content {
+        background: var(--surface-color) !important;
+        color: var(--text-primary) !important;
+      }
+
+      mat-card-title,
+      .mat-mdc-card-title {
+        color: var(--text-primary) !important;
+      }
+    }
+  }
+
+  // Fix all form field labels and text
+  ::ng-deep {
+    .mat-mdc-form-field-label,
+    .mat-form-field-label,
+    .mdc-floating-label {
+      color: var(--text-primary) !important;
+    }
+
+    .mat-mdc-input-element,
+    .mat-input-element,
+    input,
+    textarea {
+      color: var(--text-primary) !important;
+      caret-color: var(--text-primary) !important;
+    }
+  }
+
+  // Fix section headers
+  h3, h4, h5 {
+    color: var(--text-primary) !important;
+  }
+
+  .device-item {
+    background: var(--surface-color);
+    border-color: var(--border-color);
+
+    &:hover {
+      border-color: #2196f3;
+    }
+  }
+
+  .selected-device {
+    background: rgba(76, 175, 80, 0.1);
+  }
+
+  .review-card {
+    background: var(--surface-color);
+    border-color: var(--border-color);
+  }
+
+  .dialog-actions {
+    background: #1a1a1a;
+    border-top-color: #404040;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .edit-build-system-dialog {
+    min-width: auto;
+    max-width: 95vw;
+    margin: 16px;
+  }
+
+  .dialog-header {
+    padding: 20px 24px 12px;
+
+    .header-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+      padding: 6px;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+  .build-system-stepper {
+    padding: 16px 20px;
+  }
+
+  .devices-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .device-controls {
+    flex-direction: column;
+    gap: 4px;
+
+    .quantity-field,
+    .price-field {
+      width: 100%;
+    }
+  }
+
+  .review-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .step-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}

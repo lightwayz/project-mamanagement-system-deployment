@@ -1,0 +1,440 @@
+.export-dialog {
+  min-width: 500px;
+  max-width: 600px;
+  background: var(--surface-color);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 32px 16px;
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  color: white;
+  margin: -24px -24px 0 -24px;
+
+  mat-icon {
+    color: white;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h2 {
+    margin: 0;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+  }
+}
+
+.dialog-content {
+  padding: 32px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.project-info {
+  margin-bottom: 32px;
+  padding: 24px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  border: 1px solid #dee2e6;
+
+  h3 {
+    margin: 0 0 12px 0;
+    color: #2d3436;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: "📋";
+      font-size: 16px;
+    }
+  }
+
+  .project-summary {
+    color: #636e72;
+    margin: 8px 0;
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  .project-client,
+  .project-cost {
+    color: #2d3436;
+    margin: 12px 0;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    strong {
+      font-weight: 600;
+      color: #2d3436;
+    }
+  }
+
+  .project-cost {
+    font-size: 16px;
+    font-weight: 600;
+    color: #00b894;
+
+    strong {
+      color: #00b894;
+    }
+  }
+}
+
+mat-divider {
+  margin: 20px 0;
+}
+
+.export-options {
+  padding: 24px;
+  background: var(--surface-color);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 24px;
+
+  h4 {
+    margin: 0 0 20px 0;
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: "⚙️";
+      font-size: 16px;
+    }
+  }
+
+  mat-checkbox {
+    display: block;
+    margin-bottom: 16px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: var(--hover-color);
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    ::ng-deep .mat-checkbox-label {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    ::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+      background-color: #2196f3;
+    }
+  }
+}
+
+.generation-progress {
+  margin-top: 24px;
+  padding: 24px;
+  text-align: center;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-radius: 12px;
+  border: 1px solid #2196f3;
+
+  mat-progress-bar {
+    margin-bottom: 16px;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background: linear-gradient(90deg, #2196f3 0%, #1976d2 100%);
+    }
+  }
+
+  p {
+    margin: 0;
+    color: #1565c0;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    &::before {
+      content: "⏳";
+      font-size: 14px;
+    }
+  }
+}
+
+.dialog-actions {
+  padding: 24px 32px 32px;
+  margin: 0;
+  background: #fafafa;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+
+  button {
+    min-width: 140px;
+    height: 48px;
+    border-radius: 24px;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease;
+
+    &.mat-button {
+      border: 2px solid #e0e0e0;
+      color: #666;
+      background: white;
+
+      &:hover:not(:disabled) {
+        border-color: #2196f3;
+        color: #2196f3;
+      }
+    }
+
+    &.mat-raised-button {
+      background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+
+      &:hover:not(:disabled) {
+        box-shadow: 0 6px 16px rgba(33, 150, 243, 0.4);
+        transform: translateY(-1px);
+      }
+
+      &:disabled {
+        background: #e0e0e0;
+        color: #9e9e9e;
+        box-shadow: none;
+      }
+    }
+
+    mat-icon {
+      margin-right: 8px;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// Dark theme specific styles
+.dark-theme {
+  .export-dialog {
+    background-color: var(--surface-color);
+  }
+
+  .project-info {
+    background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
+    border-color: #404040;
+
+    h3 {
+      color: var(--text-primary);
+    }
+
+    .project-client,
+    .project-cost {
+      color: var(--text-primary);
+      border-bottom-color: rgba(255, 255, 255, 0.1);
+
+      strong {
+        color: var(--text-primary);
+      }
+    }
+
+    .project-cost {
+      color: #4caf50;
+
+      strong {
+        color: #4caf50;
+      }
+    }
+  }
+
+  .export-options {
+    background: var(--surface-color);
+    border-color: var(--border-color);
+  }
+
+  .generation-progress {
+    background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+    border-color: #2196f3;
+
+    p {
+      color: #90caf9;
+    }
+  }
+
+  .dialog-actions {
+    background: #1a1a1a;
+    border-top-color: #404040;
+
+    button.mat-button {
+      border-color: var(--border-color);
+      color: var(--text-primary);
+      background: var(--surface-color);
+
+      &:hover:not(:disabled) {
+        border-color: #2196f3;
+        color: #2196f3;
+        background: rgba(33, 150, 243, 0.08);
+      }
+    }
+
+    button.mat-raised-button {
+      background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+      color: white;
+
+      &:disabled {
+        background: #424242;
+        color: #757575;
+      }
+    }
+  }
+
+  mat-progress-bar {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .export-dialog {
+    min-width: auto;
+    max-width: 95vw;
+    margin: 16px;
+  }
+
+  .dialog-header {
+    padding: 20px 24px 12px;
+    margin: -24px -24px 0 -24px;
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      padding: 6px;
+    }
+
+    h2 {
+      font-size: 18px;
+    }
+  }
+
+  .dialog-content {
+    padding: 24px;
+  }
+
+  .project-info {
+    padding: 20px;
+    margin-bottom: 24px;
+
+    h3 {
+      font-size: 18px;
+    }
+
+    .project-client,
+    .project-cost {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+  }
+
+  .export-options {
+    padding: 20px;
+
+    h4 {
+      font-size: 16px;
+    }
+
+    mat-checkbox {
+      padding: 6px 8px;
+
+      ::ng-deep .mat-checkbox-label {
+        font-size: 14px;
+      }
+    }
+  }
+
+  .generation-progress {
+    padding: 20px;
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .dialog-actions {
+    flex-direction: column;
+    padding: 20px 24px 24px;
+
+    button {
+      width: 100%;
+      min-width: auto;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .export-dialog {
+    max-width: 100vw;
+    margin: 8px;
+  }
+
+  .dialog-header {
+    padding: 16px 20px 8px;
+
+    h2 {
+      font-size: 16px;
+    }
+  }
+
+  .dialog-content {
+    padding: 20px;
+  }
+
+  .project-info,
+  .export-options {
+    padding: 16px;
+  }
+}
+
+// Success and error snackbar styles (global)
+:global(.success-snackbar) {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+:global(.error-snackbar) {
+  background-color: #f44336 !important;
+  color: white !important;
+}

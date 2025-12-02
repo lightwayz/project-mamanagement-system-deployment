@@ -1,0 +1,562 @@
+<div class="dialog-header">
+  <div class="header-content">
+    <div class="header-icon">
+      <mat-icon>account_tree</mat-icon>
+    </div>
+    <div class="header-text">
+      <h2>Create Build System Template</h2>
+      <p>Design a reusable system configuration with devices and locations</p>
+    </div>
+  </div>
+  <button mat-icon-button (click)="onCancel()" class="close-button" aria-label="Close">
+    <span class="close-x">×</span>
+  </button>
+</div>
+
+<mat-dialog-content class="stepper-content">
+  <mat-stepper #stepper linear="false" orientation="horizontal" class="build-system-stepper" (selectionChange)="onStepChange($event)">
+
+    <!-- Step 1: Basic Information -->
+    <mat-step [stepControl]="basicInfoForm" [completed]="basicInfoForm.valid">
+      <form [formGroup]="basicInfoForm">
+        <ng-template matStepLabel>Basic Information</ng-template>
+
+        <div class="step-content">
+          <div class="step-header">
+            <mat-icon class="step-icon">info</mat-icon>
+            <div class="step-title">
+              <h3>System Details</h3>
+              <p>Enter the basic information for your build system template</p>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">System Name *</label>
+            <input type="text"
+                   class="form-input"
+                   formControlName="name"
+                   placeholder="Enter system name (e.g., Smart Home Basic, Office Setup)">
+            <div *ngIf="basicInfoForm.get('name')?.hasError('required') && basicInfoForm.get('name')?.touched"
+                 class="error-message">
+              System name is required
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">Description</label>
+            <textarea class="form-input form-textarea"
+                      formControlName="description"
+                      rows="3"
+                      placeholder="Describe this system template and its purpose"></textarea>
+          </div>
+
+          <div class="step-actions">
+            <button mat-flat-button
+                    color="primary"
+                    [disabled]="!basicInfoForm.valid"
+                    matStepperNext>
+              Next: Setup Locations
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 2: Location Setup -->
+    <mat-step [stepControl]="locationsForm" [completed]="canProceedToDevices()">
+      <form [formGroup]="locationsForm">
+        <ng-template matStepLabel>Location Setup</ng-template>
+
+        <div class="step-content">
+          <div class="step-header">
+            <mat-icon class="step-icon">location_on</mat-icon>
+            <div class="step-title">
+              <h3>Define Locations</h3>
+              <p>Set up the locations where devices will be installed</p>
+            </div>
+          </div>
+
+          <div class="location-setup">
+            <div class="location-header">
+              <h4 class="subsection-title">System Locations</h4>
+              <button type="button"
+                      mat-raised-button
+                      color="primary"
+                      (click)="addLocation()"
+                      class="add-location-btn">
+                <mat-icon>add</mat-icon>
+                Add Location
+              </button>
+            </div>
+
+            <div class="locations-container">
+              <div *ngFor="let location of locationSteps; let i = index; trackBy: trackByLocationIndex"
+                   class="location-item">
+
+                <div class="location-header-row">
+                  <div class="location-number">
+                    <mat-icon>location_on</mat-icon>
+                    <span>Location {{ i + 1 }}</span>
+                  </div>
+                  <div class="location-actions">
+                    <button type="button"
+                            mat-icon-button
+                            color="primary"
+                            (click)="toggleLocationExpansion(i)"
+                            matTooltip="Toggle sub-locations"
+                            class="expand-location-btn">
+                      <mat-icon>{{ location.isExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+                    </button>
+                    <button type="button"
+                            mat-icon-button
+                            color="warn"
+                            *ngIf="locationSteps.length > 1"
+                            (click)="removeLocation(i)"
+                            matTooltip="Remove location"
+                            class="remove-location-btn">
+                      <mat-icon>remove_circle</mat-icon>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-field half-width">
+                    <label class="field-label">Location Name *</label>
+                    <input type="text"
+                           class="form-input"
+                           [value]="location.name"
+                           (input)="onLocationNameChange(i, $event.target)"
+                           placeholder="Enter location">
+                  </div>
+                  <div class="form-field half-width">
+                    <label class="field-label">Description</label>
+                    <input type="text"
+                           class="form-input"
+                           [value]="location.description"
+                           (input)="onLocationDescriptionChange(i, $event.target)"
+                           placeholder="Location description">
+                  </div>
+                </div>
+
+                <!-- Sub-locations Section -->
+                <div class="sub-locations-section" *ngIf="location.isExpanded">
+                  <div class="sub-location-header">
+                    <h5 class="sub-location-title">
+                      <mat-icon>subdirectory_arrow_right</mat-icon>
+                      Sub-Locations
+                    </h5>
+                    <button type="button"
+                            mat-stroked-button
+                            color="primary"
+                            (click)="addSubLocation(i)"
+                            class="add-sub-location-btn">
+                      <mat-icon>add</mat-icon>
+                      Add Sub-Location
+                    </button>
+                  </div>
+
+                  <div class="sub-locations-list" *ngIf="location.subLocations && location.subLocations.length > 0">
+                    <div *ngFor="let subLocation of location.subLocations; let j = index"
+                         class="sub-location-item">
+                      <div class="sub-location-header-row">
+                        <div class="sub-location-number">
+                          <mat-icon>subdirectory_arrow_right</mat-icon>
+                          <span>{{ subLocation.name }}</span>
+                        </div>
+                        <button type="button"
+                                mat-icon-button
+                                color="warn"
+                                (click)="removeSubLocation(i, j)"
+                                matTooltip="Remove sub-location"
+                                class="remove-sub-location-btn">
+                          <mat-icon>remove_circle_outline</mat-icon>
+                        </button>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-field half-width">
+                          <label class="field-label">Sub-Location Name *</label>
+                          <input type="text"
+                                 class="form-input"
+                                 [value]="subLocation.name"
+                                 (input)="onSubLocationNameChange(i, j, $event.target)"
+                                 placeholder="Enter location">
+                        </div>
+                        <div class="form-field half-width">
+                          <label class="field-label">Description</label>
+                          <input type="text"
+                                 class="form-input"
+                                 [value]="subLocation.description"
+                                 (input)="onSubLocationDescriptionChange(i, j, $event.target)"
+                                 placeholder="Location description">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="no-sub-locations" *ngIf="!location.subLocations || location.subLocations.length === 0">
+                    <p class="hint-text">
+                      <mat-icon>info</mat-icon>
+                      No sub-locations added. Click "Add Sub-Location" to create specific areas within {{ location.name }}.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-actions">
+            <button mat-stroked-button matStepperPrevious>
+              Back
+            </button>
+            <button mat-flat-button
+                    color="primary"
+                    [disabled]="!canProceedToDevices()"
+                    matStepperNext>
+              Next: Select Devices
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 3: Device Selection -->
+    <mat-step [completed]="canProceedToReview()">
+      <ng-template matStepLabel>Device Selection</ng-template>
+
+      <div class="step-content">
+        <div class="step-header">
+          <mat-icon class="step-icon">devices</mat-icon>
+          <div class="step-title">
+            <h3>Select Devices</h3>
+            <p>Choose devices from inventory and assign them to locations</p>
+          </div>
+        </div>
+
+        <!-- Current Location Selector -->
+        <div class="current-location-selector">
+          <h4 class="subsection-title">Add Devices to Location</h4>
+          <div class="location-tabs">
+            <!-- Main Locations -->
+            <div *ngFor="let location of locationSteps; let i = index" class="location-group">
+              <button mat-raised-button
+                      [color]="currentLocationIndex === i && currentSubLocationIndex === undefined ? 'primary' : ''"
+                      (click)="selectLocation(i)"
+                      class="location-tab main-location-tab">
+                <mat-icon>location_on</mat-icon>
+                {{ location.name }}
+                <span class="device-count" *ngIf="location.devices.length > 0">
+                  ({{ getLocationDevicesCount(location) }})
+                </span>
+              </button>
+
+              <!-- Sub-Location Tabs -->
+              <div class="sub-location-tabs" *ngIf="location.subLocations && location.subLocations.length > 0">
+                <button *ngFor="let subLocation of location.subLocations; let j = index"
+                        mat-stroked-button
+                        [color]="currentLocationIndex === i && currentSubLocationIndex === j ? 'primary' : ''"
+                        (click)="selectSubLocation(i, j)"
+                        class="location-tab sub-location-tab">
+                  <mat-icon>subdirectory_arrow_right</mat-icon>
+                  {{ subLocation.name }}
+                  <span class="device-count" *ngIf="subLocation.devices.length > 0">
+                    ({{ getSubLocationDevicesCount(subLocation) }})
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Device Search and Selection -->
+        <div class="device-selection-section">
+          <div class="device-search">
+            <mat-form-field appearance="outline" class="search-field">
+              <mat-label>Search devices...</mat-label>
+              <input matInput
+                     #searchInput
+                     (input)="onDeviceSearch(searchInput.value)"
+                     placeholder="Search by name, brand, or category">
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="device-grid" *ngIf="!loadingDevices">
+            <div *ngFor="let device of filteredDevices; trackBy: trackByDeviceId"
+                 class="device-card"
+                 [class.device-selected]="isDeviceSelected(device)"
+                 (click)="onDeviceSelect(device, currentLocationIndex)">
+
+              <div class="device-image">
+                <img *ngIf="device.image_url"
+                     [src]="device.image_url"
+                     [alt]="device.name"
+                     onerror="this.style.display='none'">
+                <mat-icon *ngIf="!device.image_url">devices</mat-icon>
+              </div>
+
+              <div class="device-info">
+                <h5 class="device-name">{{ device.name }}</h5>
+                <p class="device-details">
+                  {{ device.brand }} {{ device.model }}
+                </p>
+                <p class="device-category">{{ device.category }}</p>
+                <div class="device-price">
+                  {{ device.selling_price | appCurrency }}
+                </div>
+              </div>
+
+              <div class="device-actions" *ngIf="isDeviceSelected(device)">
+                <mat-icon class="selected-icon">check_circle</mat-icon>
+              </div>
+            </div>
+          </div>
+
+          <div class="loading-state" *ngIf="loadingDevices">
+            <mat-spinner diameter="48"></mat-spinner>
+            <p>Loading devices...</p>
+          </div>
+        </div>
+
+        <!-- Selected Devices Summary -->
+        <div class="selected-devices-summary" *ngIf="getTotalDeviceCount() > 0">
+          <h4 class="subsection-title">Selected Devices by Location</h4>
+          <div class="location-summaries">
+            <div *ngFor="let location of locationSteps; let i = index"
+                 class="location-summary">
+              <ng-container *ngIf="location.devices.length > 0">
+              <div class="location-summary-header">
+                <h5>
+                  <mat-icon>location_on</mat-icon>
+                  {{ location.name }}
+                </h5>
+                <div class="location-cost">
+                  {{ getLocationTotalCost(i) | appCurrency }}
+                </div>
+              </div>
+              <div class="devices-list">
+                <div *ngFor="let device of location.devices; let deviceIndex = index"
+                     class="device-summary-item">
+                  <div class="device-summary-info">
+                    <span class="device-summary-name">{{ device.name }}</span>
+                    <span class="device-summary-details">{{ device.brand }} {{ device.model }}</span>
+                  </div>
+                  <div class="device-quantity-controls">
+                    <button mat-icon-button
+                            (click)="updateDeviceQuantity(i, deviceIndex, (device.selectedQuantity || 1) - 1)"
+                            [disabled]="(device.selectedQuantity || 1) <= 1">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                    <span class="quantity-display">{{ device.selectedQuantity || 1 }}</span>
+                    <button mat-icon-button
+                            (click)="updateDeviceQuantity(i, deviceIndex, (device.selectedQuantity || 1) + 1)">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                  <div class="device-pricing">
+                    <input type="number"
+                           class="price-input"
+                           [value]="device.selectedPrice || device.selling_price"
+                           (input)="updateDevicePrice(i, deviceIndex, $event)"
+                           min="0"
+                           step="0.01">
+                  </div>
+                  <button mat-icon-button
+                          color="warn"
+                          (click)="removeDeviceFromLocation(device.id, i, deviceIndex)"
+                          matTooltip="Remove device">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <button mat-stroked-button matStepperPrevious>
+            Back
+          </button>
+          <button mat-flat-button
+                  color="primary"
+                  [disabled]="!canProceedToReview()"
+                  matStepperNext>
+            Next: Review
+          </button>
+        </div>
+      </div>
+    </mat-step>
+
+    <!-- Step 4: Review and Create -->
+    <mat-step>
+      <ng-template matStepLabel>Review & Create</ng-template>
+
+      <div class="step-content">
+        <div class="step-header">
+          <mat-icon class="step-icon">preview</mat-icon>
+          <div class="step-title">
+            <h3>Review Build System</h3>
+            <p>Confirm all details before creating the system template</p>
+          </div>
+        </div>
+
+        <div class="review-sections">
+          <!-- System Information Review -->
+          <mat-card class="review-card">
+            <mat-card-header>
+              <mat-card-title>System Information</mat-card-title>
+              <button mat-icon-button (click)="goToStep(0)" matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="review-item">
+                <strong>Name:</strong> {{ basicInfoForm.get('name')?.value }}
+              </div>
+              <div class="review-item" *ngIf="basicInfoForm.get('description')?.value">
+                <strong>Description:</strong> {{ basicInfoForm.get('description')?.value }}
+              </div>
+              <div class="review-item">
+                <strong>Total Locations:</strong> {{ locationSteps.length }}
+              </div>
+              <div class="review-item">
+                <strong>Total Devices:</strong> {{ getTotalDeviceCount() }}
+              </div>
+              <div class="review-item">
+                <strong>Total Cost:</strong> {{ totalCost | appCurrency }}
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Locations and Devices Review -->
+          <mat-card class="review-card" *ngIf="locationSteps.length > 0">
+            <mat-card-header>
+              <mat-card-title>Locations & Devices</mat-card-title>
+              <button mat-icon-button (click)="goToStep(2)" matTooltip="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="locations-review">
+                <div *ngFor="let location of locationSteps; let i = index"
+                     class="location-review">
+                  <!-- Main Location -->
+                  <div class="location-review-header">
+                    <h5>
+                      <mat-icon>location_on</mat-icon>
+                      {{ location.name }}
+                    </h5>
+                    <div class="location-review-cost" *ngIf="getLocationTotalCost(i) > 0">
+                      {{ getLocationTotalCost(i) | appCurrency }}
+                    </div>
+                  </div>
+                  <div class="location-review-description" *ngIf="location.description">
+                    {{ location.description }}
+                  </div>
+
+                  <!-- Main Location Devices -->
+                  <div class="devices-review-list" *ngIf="location.devices.length > 0">
+                    <div *ngFor="let device of location.devices" class="device-review-item">
+                      <div class="device-review-info">
+                        <strong>{{ device.name }}</strong>
+                        <div class="device-review-details">
+                          {{ device.brand }} {{ device.model }} | {{ device.category }}
+                        </div>
+                      </div>
+                      <div class="device-review-pricing">
+                        <div>Qty: {{ device.selectedQuantity || 1 }}</div>
+                        <div>Unit: {{ (device.selectedPrice || device.selling_price) | appCurrency }}</div>
+                        <div class="device-review-total">
+                          <strong>{{ ((device.selectedQuantity || 1) * (device.selectedPrice || device.selling_price)) | appCurrency }}</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Sub-Locations -->
+                  <div class="sub-locations-review" *ngIf="location.subLocations && location.subLocations.length > 0">
+                    <div *ngFor="let subLocation of location.subLocations; let j = index" class="sub-location-review">
+                      <div class="sub-location-review-header">
+                        <h6>
+                          <mat-icon>subdirectory_arrow_right</mat-icon>
+                          {{ subLocation.name }}
+                        </h6>
+                        <div class="sub-location-review-cost" *ngIf="getSubLocationTotalCost(i, j) > 0">
+                          {{ getSubLocationTotalCost(i, j) | appCurrency }}
+                        </div>
+                      </div>
+                      <div class="sub-location-review-description" *ngIf="subLocation.description">
+                        {{ subLocation.description }}
+                      </div>
+
+                      <!-- Sub-Location Devices -->
+                      <div class="devices-review-list sub-location-devices" *ngIf="subLocation.devices && subLocation.devices.length > 0">
+                        <div *ngFor="let device of subLocation.devices" class="device-review-item">
+                          <div class="device-review-info">
+                            <strong>{{ device.name }}</strong>
+                            <div class="device-review-details">
+                              {{ device.brand }} {{ device.model }} | {{ device.category }}
+                            </div>
+                          </div>
+                          <div class="device-review-pricing">
+                            <div>Qty: {{ device.selectedQuantity || 1 }}</div>
+                            <div>Unit: {{ (device.selectedPrice || device.selling_price) | appCurrency }}</div>
+                            <div class="device-review-total">
+                              <strong>{{ ((device.selectedQuantity || 1) * (device.selectedPrice || device.selling_price)) | appCurrency }}</strong>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Show message if sub-location has no devices -->
+                      <div class="no-devices-in-location" *ngIf="!subLocation.devices || subLocation.devices.length === 0">
+                        <p class="hint-text">
+                          <mat-icon>info</mat-icon>
+                          No devices assigned to this sub-location
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Show message if main location has no devices -->
+                  <div class="no-devices-in-location" *ngIf="location.devices.length === 0 && (!location.subLocations || location.subLocations.length === 0)">
+                    <p class="hint-text">
+                      <mat-icon>info</mat-icon>
+                      No devices assigned to this location
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <div class="no-devices-message" *ngIf="getTotalDeviceCount() === 0">
+            <mat-icon>info</mat-icon>
+            <p>No devices selected. You can add devices to the system later.</p>
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <button mat-stroked-button matStepperPrevious>
+            Back
+          </button>
+          <button mat-flat-button
+                  color="primary"
+                  [disabled]="loading"
+                  (click)="onSubmit()"
+                  class="create-btn">
+            <mat-icon *ngIf="loading" class="loading-icon">refresh</mat-icon>
+            {{ loading ? 'Creating...' : 'Create Build System' }}
+          </button>
+        </div>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button mat-stroked-button (click)="onCancel()" class="cancel-btn">
+    Cancel
+  </button>
+</mat-dialog-actions>
