@@ -1,0 +1,546 @@
+[
+    {
+        "id": 1,
+        "name": "Test Project API",
+        "description": "API testing project with sample data",
+        "status": "draft",
+        "start_date": "2025-09-14",
+        "end_date": "2025-10-19",
+        "total_cost": 665,
+        "client_id": null,
+        "client": null,
+        "salesperson_id": 1,
+        "salesperson": {
+            "id": 1,
+            "name": "Admin User",
+            "email": "admin@hometronix.com"
+        },
+        "locations": [
+            {
+                "id": 1,
+                "name": "Living Room",
+                "description": "Main living area",
+                "devices": [
+                    {
+                        "id": "17583022886594",
+                        "device_id": 1,
+                        "device": {
+                            "id": 1,
+                            "name": "Smart LED Bulb",
+                            "brand": "Philips",
+                            "model": "Hue A19",
+                            "category": "lighting",
+                            "selling_price": 45,
+                            "cost_price": 25
+                        },
+                        "quantity": 2,
+                        "unit_price": 45,
+                        "total_price": 90
+                    },
+                    {
+                        "id": "17583022882253",
+                        "device_id": 2,
+                        "device": {
+                            "id": 2,
+                            "name": "Smart Thermostat",
+                            "brand": "Nest",
+                            "model": "Learning Thermostat",
+                            "category": "hvac",
+                            "selling_price": 150,
+                            "cost_price": 100
+                        },
+                        "quantity": 1,
+                        "unit_price": 150,
+                        "total_price": 150
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Kitchen",
+                "description": "Kitchen area",
+                "devices": [
+                    {
+                        "id": "17583022888183",
+                        "device_id": 1,
+                        "device": {
+                            "id": 1,
+                            "name": "Smart LED Bulb",
+                            "brand": "Philips",
+                            "model": "Hue A19",
+                            "category": "lighting",
+                            "selling_price": 45,
+                            "cost_price": 25
+                        },
+                        "quantity": 3,
+                        "unit_price": 45,
+                        "total_price": 135
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Bedroom",
+                "description": "Master bedroom",
+                "devices": [
+                    {
+                        "id": "17583022887456",
+                        "device_id": 1,
+                        "device": {
+                            "id": 1,
+                            "name": "Smart LED Bulb",
+                            "brand": "Philips",
+                            "model": "Hue A19",
+                            "category": "lighting",
+                            "selling_price": 45,
+                            "cost_price": 25
+                        },
+                        "quantity": 2,
+                        "unit_price": 45,
+                        "total_price": 90
+                    },
+                    {
+                        "id": "17583022888552",
+                        "device_id": 3,
+                        "device": {
+                            "id": 3,
+                            "name": "Security Camera",
+                            "brand": "Ring",
+                            "model": "Indoor Cam",
+                            "category": "security",
+                            "selling_price": 200,
+                            "cost_price": 120
+                        },
+                        "quantity": 1,
+                        "unit_price": 200,
+                        "total_price": 200
+                    }
+                ]
+            }
+        ],
+        "created_at": "2025-09-14T16:47:42.970807Z",
+        "updated_at": "2025-09-17T16:47:42.970855Z"
+    },
+    {
+        "id": 2,
+        "name": "Smart Home Installation",
+        "description": "Complete smart home automation system for residential property",
+        "status": "active",
+        "start_date": "2025-09-09",
+        "end_date": "2025-10-09",
+        "total_cost": 125000,
+        "client_id": 1,
+        "client": {
+            "id": 1,
+            "name": "Johnson Family",
+            "email": "johnson@example.com"
+        },
+        "salesperson_id": 2,
+        "salesperson": {
+            "id": 2,
+            "name": "John Doe",
+            "email": "john@hometronix.com"
+        },
+        "locations": [],
+        "created_at": "2025-09-09T16:47:42.970963Z",
+        "updated_at": "2025-09-18T16:47:42.971054Z"
+    },
+    {
+        "id": 3,
+        "name": "Security System Upgrade",
+        "description": "CCTV and access control system upgrade for office building",
+        "status": "completed",
+        "start_date": "2025-08-05",
+        "end_date": "2025-09-04",
+        "total_cost": 87500,
+        "client_id": 2,
+        "client": {
+            "id": 2,
+            "name": "Smith Corporation",
+            "email": "info@smithcorp.com"
+        },
+        "salesperson_id": 1,
+        "salesperson": {
+            "id": 1,
+            "name": "Admin User",
+            "email": "admin@hometronix.com"
+        },
+        "locations": [],
+        "created_at": "2025-08-05T16:47:42.971180Z",
+        "updated_at": "2025-09-04T16:47:42.971305Z"
+    },
+    {
+        "id": 357,
+        "name": "New Test Project",
+        "description": "This should appear in the listing",
+        "client_id": null,
+        "salesperson_id": null,
+        "status": "draft",
+        "start_date": null,
+        "end_date": null,
+        "total_cost": 0,
+        "created_at": "2025-09-19T16:47:42.970422Z",
+        "updated_at": "2025-09-19T16:47:42.970510Z",
+        "client": null,
+        "salesperson": null,
+        "locations": []
+    },
+    {
+        "id": 429,
+        "name": "Smart Lighting Project",
+        "description": "Automated lighting system",
+        "client_id": 1,
+        "salesperson_id": null,
+        "status": "active",
+        "start_date": null,
+        "end_date": null,
+        "total_cost": 150,
+        "created_at": "2025-09-19T16:47:58.050833Z",
+        "updated_at": "2025-09-19T16:47:58.050920Z",
+        "client": {
+            "id": 1,
+            "name": "Mock Client 1",
+            "email": "client1@example.com"
+        },
+        "salesperson": null,
+        "locations": [
+            {
+                "id": 8527,
+                "name": "Living Room",
+                "description": "Main area",
+                "devices": [
+                    {
+                        "id": 3333,
+                        "device_id": 1,
+                        "quantity": 3,
+                        "unit_price": 50,
+                        "total_price": 150,
+                        "device": {
+                            "id": 1,
+                            "name": "Mock Device 1",
+                            "brand": "Mock Brand",
+                            "model": "Model-1"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 262,
+        "name": "LatestProject",
+        "description": "LatestProject",
+        "client_id": 8,
+        "salesperson_id": "1",
+        "status": "draft",
+        "start_date": "2025-09-20",
+        "end_date": "2025-09-22",
+        "total_cost": 1995,
+        "created_at": "2025-09-19T16:51:03.355520Z",
+        "updated_at": "2025-09-19T16:51:03.355617Z",
+        "client": {
+            "id": 8,
+            "name": "Mock Client 8",
+            "email": "client8@example.com"
+        },
+        "salesperson": {
+            "id": "1",
+            "name": "Mock Salesperson 1",
+            "email": "sales1@example.com"
+        },
+        "locations": [
+            {
+                "id": 3781,
+                "name": "Living Room",
+                "description": "Location 1 for Audio-Visuals",
+                "devices": [
+                    {
+                        "id": "17583036376560",
+                        "device_id": 1,
+                        "device": {
+                            "id": 1,
+                            "name": "Smart LED Bulb",
+                            "brand": "Philips",
+                            "model": "Hue A19",
+                            "category": "lighting",
+                            "selling_price": 45,
+                            "cost_price": 25
+                        },
+                        "quantity": 2,
+                        "unit_price": 45,
+                        "total_price": 90
+                    },
+                    {
+                        "id": "17583036372832",
+                        "device_id": 2,
+                        "device": {
+                            "id": 2,
+                            "name": "Smart Thermostat",
+                            "brand": "Nest",
+                            "model": "Learning Thermostat",
+                            "category": "hvac",
+                            "selling_price": 150,
+                            "cost_price": 100
+                        },
+                        "quantity": 1,
+                        "unit_price": 150,
+                        "total_price": 150
+                    },
+                    {
+                        "id": "17583036713531",
+                        "device_id": 1,
+                        "device": {
+                            "id": 1,
+                            "name": "Smart LED Bulb",
+                            "brand": "Philips",
+                            "model": "Hue A19",
+                            "category": "lighting",
+                            "selling_price": 45,
+                            "cost_price": 25
+                        },
+                        "quantity": 2,
+                        "unit_price": 45,
+                        "total_price": 90
+                    },
+                    {
+                        "id": "17583036712212",
+                        "device_id": 2,
+                        "device": {
+                            "id": 2,
+                            "name": "Smart Thermostat",
+                            "brand": "Nest",
+                            "model": "Learning Thermostat",
+                            "category": "hvac",
+                            "selling_price": 150,
+                            "cost_price": 100
+                        },
+                        "quantity": 1,
+                        "unit_price": 150,
+                        "total_price": 150
+                    },
+                    {
+                        "id": "17583037692052",
+                        "device_id": 1,
+                        "device": {
+                            "id": 1,
+                            "name": "Smart LED Bulb",
+                            "brand": "Philips",
+                            "model": "Hue A19",
+                            "category": "lighting",
+                            "selling_price": 45,
+                            "cost_price": 25
+                        },
+                        "quantity": 2,
+                        "unit_price": 45,
+                        "total_price": 90
+                    },
+                    {
+                        "id": "17583037693573",
+                        "device_id": 2,
+                        "device": {
+                            "id": 2,
+                            "name": "Smart Thermostat",
+                            "brand": "Nest",
+                            "model": "Learning Thermostat",
+                            "category": "hvac",
+                            "selling_price": 150,
+                            "cost_price": 100
+                        },
+                        "quantity": 1,
+                        "unit_price": 150,
+                        "total_price": 150
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Kitchen",
+                "description": "Kitchen area",
+                "devices": [
+                    {
+                        "id": "17583036371529",
+                        "device_id": 1,
+                        "device": {
+                            "id": 1,
+                            "name": "Smart LED Bulb",
+                            "brand": "Philips",
+                            "model": "Hue A19",
+                            "category": "lighting",
+                            "selling_price": 45,
+                            "cost_price": 25
+                        },
+                        "quantity": 3,
+                        "unit_price": 45,
+                        "total_price": 135
+                    },
+                    {
+                        "id": "17583036718969",
+                        "device_id": 1,
+                        "device": {
+                            "id": 1,
+                            "name": "Smart LED Bulb",
+                            "brand": "Philips",
+                            "model": "Hue A19",
+                            "category": "lighting",
+                            "selling_price": 45,
+                            "cost_price": 25
+                        },
+                        "quantity": 3,
+                        "unit_price": 45,
+                        "total_price": 135
+                    },
+                    {
+                        "id": "17583037695111",
+                        "device_id": 1,
+                        "device": {
+                            "id": 1,
+                            "name": "Smart LED Bulb",
+                            "brand": "Philips",
+                            "model": "Hue A19",
+                            "category": "lighting",
+                            "selling_price": 45,
+                            "cost_price": 25
+                        },
+                        "quantity": 3,
+                        "unit_price": 45,
+                        "total_price": 135
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Bedroom",
+                "description": "Master bedroom",
+                "devices": [
+                    {
+                        "id": "17583036373808",
+                        "device_id": 1,
+                        "device": {
+                            "id": 1,
+                            "name": "Smart LED Bulb",
+                            "brand": "Philips",
+                            "model": "Hue A19",
+                            "category": "lighting",
+                            "selling_price": 45,
+                            "cost_price": 25
+                        },
+                        "quantity": 2,
+                        "unit_price": 45,
+                        "total_price": 90
+                    },
+                    {
+                        "id": "17583036375312",
+                        "device_id": 3,
+                        "device": {
+                            "id": 3,
+                            "name": "Security Camera",
+                            "brand": "Ring",
+                            "model": "Indoor Cam",
+                            "category": "security",
+                            "selling_price": 200,
+                            "cost_price": 120
+                        },
+                        "quantity": 1,
+                        "unit_price": 200,
+                        "total_price": 200
+                    },
+                    {
+                        "id": "17583036714757",
+                        "device_id": 1,
+                        "device": {
+                            "id": 1,
+                            "name": "Smart LED Bulb",
+                            "brand": "Philips",
+                            "model": "Hue A19",
+                            "category": "lighting",
+                            "selling_price": 45,
+                            "cost_price": 25
+                        },
+                        "quantity": 2,
+                        "unit_price": 45,
+                        "total_price": 90
+                    },
+                    {
+                        "id": "17583036714801",
+                        "device_id": 3,
+                        "device": {
+                            "id": 3,
+                            "name": "Security Camera",
+                            "brand": "Ring",
+                            "model": "Indoor Cam",
+                            "category": "security",
+                            "selling_price": 200,
+                            "cost_price": 120
+                        },
+                        "quantity": 1,
+                        "unit_price": 200,
+                        "total_price": 200
+                    },
+                    {
+                        "id": "17583037692937",
+                        "device_id": 1,
+                        "device": {
+                            "id": 1,
+                            "name": "Smart LED Bulb",
+                            "brand": "Philips",
+                            "model": "Hue A19",
+                            "category": "lighting",
+                            "selling_price": 45,
+                            "cost_price": 25
+                        },
+                        "quantity": 2,
+                        "unit_price": 45,
+                        "total_price": 90
+                    },
+                    {
+                        "id": "17583037696677",
+                        "device_id": 3,
+                        "device": {
+                            "id": 3,
+                            "name": "Security Camera",
+                            "brand": "Ring",
+                            "model": "Indoor Cam",
+                            "category": "security",
+                            "selling_price": 200,
+                            "cost_price": 120
+                        },
+                        "quantity": 1,
+                        "unit_price": 200,
+                        "total_price": 200
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 788,
+        "name": "FreshNew",
+        "description": "FreshNew Project",
+        "client_id": 8,
+        "salesperson_id": "1",
+        "status": "draft",
+        "start_date": "2025-10-02",
+        "end_date": "2025-10-06",
+        "total_cost": 0,
+        "created_at": "2025-10-01T18:06:39.600425Z",
+        "updated_at": "2025-10-01T18:06:39.600522Z",
+        "client": {
+            "id": 8,
+            "name": "Mock Client 8",
+            "email": "client8@example.com"
+        },
+        "salesperson": {
+            "id": "1",
+            "name": "Mock Salesperson 1",
+            "email": "sales1@example.com"
+        },
+        "locations": [
+            {
+                "id": 1551,
+                "name": "Living Room",
+                "description": "Location 1 for Test System",
+                "devices": []
+            }
+        ]
+    }
+]

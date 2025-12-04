@@ -1,0 +1,44 @@
+name: Deploy Frontend to cPanel
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "frontend/**"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install Dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Build Angular App
+        working-directory: frontend
+        run: npm run build --configuration production
+
+      - name: Compress Build
+        working-directory: frontend/dist/hometronix-frontend
+        run: zip -r ../../frontend.zip .
+
+      - name: Upload via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.CPANEL_HOST }}
+          username: ${{ secrets.CPANEL_USERNAME }}
+          password: ${{ secrets.CPANEL_PASSWORD }}
+          protocol: ftps
+          local-dir: "frontend/dist/hometronix-frontend"
+          server-dir: ${{ secrets.FRONTEND_REMOTE_DIR }}
+          dangerous-clean-slate: true
+

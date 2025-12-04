@@ -1,0 +1,48 @@
+# ===========================================
+# DISABLE CACHING FOR ANGULAR FRONTEND FILES
+# ===========================================
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html|htm|js|css)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+    </FilesMatch>
+</IfModule>
+
+# ===========================================
+# GLOBAL CORS FOR CPANEL / APACHE
+# ===========================================
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "https://pms.webtechassets.com"
+    Header always set Access-Control-Allow-Credentials "true"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Origin, Content-Type, X-Requested-With, Accept, Authorization"
+</IfModule>
+
+# ===========================================
+# FIX FOR OPTIONS PRE-FLIGHT (CPANEL BLOCK)
+# ===========================================
+RewriteEngine On
+
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^ - [L,R=200]
+
+# ===========================================
+# LARAVEL FRONT CONTROLLER
+# ===========================================
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]
+
+# ===========================================
+# FORCE CORS FOR PHP
+# ===========================================
+<FilesMatch "\.(php)$">
+    Header always set Access-Control-Allow-Origin "https://pms.webtechassets.com"
+    Header always set Access-Control-Allow-Credentials "true"
+</FilesMatch>
+
+# PHP Handler
+<IfModule mime_module>
+    AddHandler application/x-httpd-ea-php83 .php .php8 .phtml
+</IfModule>
