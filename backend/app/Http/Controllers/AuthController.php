@@ -41,7 +41,7 @@ class AuthController extends Controller
             ], 403);
         }
 
-        // Create token (your custom base64 token)
+        // Create token (custom base64 token)
         $payload = [
             'id'    => $user->id,
             'email' => $user->email,
@@ -52,11 +52,11 @@ class AuthController extends Controller
         $token = base64_encode(json_encode($payload));
 
         return response()->json([
-            'message' => 'Login successful',
-            'token'   => $token,
-            'token_type' => 'bearer',
-            'expires_in' => 86400,
-            'user' => [
+            'message'   => 'Login successful',
+            'token'     => $token,
+            'token_type'=> 'bearer',
+            'expires_in'=> 86400,
+            'user'      => [
                 'id'    => $user->id,
                 'name'  => $user->name,
                 'email' => $user->email,
@@ -71,7 +71,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        // Logout is handled client-side
+        // Client removes token
         return response()->json(['message' => 'Successfully logged out']);
     }
 
@@ -90,18 +90,18 @@ class AuthController extends Controller
             'id'    => $user->id,
             'email' => $user->email,
             'role'  => $user->role,
-            'exp'   => time() + (60 * 60 * 24)
+            'exp'   => time() + (60 * 60 * 24),
         ]));
 
         return response()->json([
-            'token' => $newToken,
+            'token'      => $newToken,
             'token_type' => 'bearer',
             'expires_in' => 86400
         ]);
     }
 
     /**
-     * RETURN CURRENT USER
+     * CURRENT USER
      */
     public function me(Request $request)
     {
@@ -122,7 +122,7 @@ class AuthController extends Controller
     }
 
     /**
-     * PASSWORD STATUS (Frontend calls this on every login)
+     * PASSWORD STATUS (frontend uses this)
      */
     public function passwordStatus(Request $request)
     {
@@ -132,17 +132,17 @@ class AuthController extends Controller
             return $user; // error response
         }
 
-        // Temporary static response
+        // For now static; later you can plug your real logic here
         return response()->json([
             'days_remaining'   => 90,
             'is_expired'       => false,
             'is_expiring_soon' => false,
-            'next_expiry_date' => now()->addDays(90)->format('Y-m-d')
+            'next_expiry_date' => now()->addDays(90)->format('Y-m-d'),
         ]);
     }
 
     /**
-     * TOKEN DECODING + VALIDATION (shared by /me, /refresh, password-status)
+     * SHARED TOKEN DECODER
      */
     private function getUserFromToken(Request $request)
     {
@@ -152,7 +152,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'No token provided'], 401);
         }
 
-        $token = substr($auth, 7);
+        $token   = substr($auth, 7);
         $decoded = json_decode(base64_decode($token), true);
 
         if (!$decoded || !isset($decoded['id'])) {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -11,6 +11,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
+  // Generic GET
   get<T>(endpoint: string, params?: any): Observable<T> {
     let httpParams = new HttpParams();
     if (params) {
@@ -23,18 +24,15 @@ export class ApiService {
     return this.http.get<T>(`${this.apiUrl}${endpoint}`, { params: httpParams });
   }
 
-  // Method for blob responses
+  // Specific Users API
+  getUsers(params?: any): Observable<any> {
+    return this.get('/users', params);
+  }
+
+  // Blob GET
   getBlob(endpoint: string, params?: any): Observable<Blob> {
-    let httpParams = new HttpParams();
-    if (params) {
-      Object.keys(params).forEach(key => {
-        if (params[key] !== null && params[key] !== undefined) {
-          httpParams = httpParams.set(key, params[key]);
-        }
-      });
-    }
     return this.http.get(`${this.apiUrl}${endpoint}`, { 
-      params: httpParams, 
+      params,
       responseType: 'blob' 
     });
   }
@@ -43,11 +41,8 @@ export class ApiService {
     return this.http.post<T>(`${this.apiUrl}${endpoint}`, data);
   }
 
-  // Method for blob responses
   postBlob(endpoint: string, data: any): Observable<Blob> {
-    return this.http.post(`${this.apiUrl}${endpoint}`, data, { 
-      responseType: 'blob' 
-    });
+    return this.http.post(`${this.apiUrl}${endpoint}`, data, { responseType: 'blob' });
   }
 
   put<T>(endpoint: string, data: any): Observable<T> {
@@ -73,7 +68,7 @@ export class ApiService {
   upload<T>(endpoint: string, file: File, additionalData?: any): Observable<T> {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     if (additionalData) {
       Object.keys(additionalData).forEach(key => {
         formData.append(key, additionalData[key]);
