@@ -1,0 +1,154 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Hash;
+
+class User extends Authenticatable
+{
+    use HasFactory, Notifiable, SoftDeletes;
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'role',
+        'password_changed_at',
+        'password_expires_at',
+        'force_password_change',
+        'is_active',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password_changed_at' => 'datetime',
+        'password_expires_at' => 'datetime',
+        'force_password_change' => 'boolean',
+        'is_active' => 'boolean',
+    ];
+
+    /**
+     * Automatically hash password when saving, only if not already hashed.
+     */
+    public function setPasswordAttribute($password)
+    {
+        // bcrypt hashes are always 60 characters
+        if (!empty($password) && strlen($password) < 60) {
+            $this->attributes['password'] = Hash::make($password);
+        } else {
+            $this->attributes['password'] = $password;
+        }
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'salesperson_id');
+    }
+
+    public function assignedTasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_to');
+    }
+
+    public function uploadedFiles()
+    {
+        return $this->hasMany(ProjectFile::class, 'uploaded_by');
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isSalesperson()
+    {
+        return $this->role === 'salesperson';
+    }
+
+    public function isTechnician()
+    {
+        return $this->role === 'technician';
+    }
+
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
+    public function isPasswordExpired()
+    {
+        if (!$this->password_expires_at) {
+            return false;
+        }
+        return now()->gt($this->password_expires_at);
+    }
+
+    public function getDaysUntilPasswordExpires()
+    {
+        if (!$this->password_expires_at) {
+            return null;
+        }
+
+        $daysRemaining = now()->diffInDays($this->password_expires_at, false);
+        return $daysRemaining > 0 ? $daysRemaining : 0;
+    }
+
+    public function isPasswordExpiringSoon()
+    {
+        $daysRemaining = $this->getDaysUntilPasswordExpires();
+        return $daysRemaining !== null && $daysRemaining <= 7 && $daysRemaining > 0;
+    }
+
+    public function setPasswordExpiry($passwordChangedAt = null)
+    {
+        $passwordChangedAt = $passwordChangedAt ?? now();
+        $this->password_changed_at = $passwordChangedAt;
+        $this->password_expires_at = $passwordChangedAt->copy()->addDays(90);
+        $this->force_password_change = false;
+        $this->save();
+    }
+
+    public function calculatePasswordExpiryFromCreation()
+    {
+        $baseDate = $this->password_changed_at ?? $this->created_at;
+
+        $creationDate = $this->created_at;
+        $daysSinceCreation = $creationDate->diffInDays(now());
+        $cyclesPassed = floor($daysSinceCreation / 90);
+
+        return $creationDate->copy()->addDays(($cyclesPassed + 1) * 90);
+    }
+
+    public function getDaysUntilPasswordExpiresFromCreation()
+    {
+        $nextExpiryDate = $this->calculatePasswordExpiryFromCreation();
+        $daysRemaining = now()->diffInDays($nextExpiryDate, false);
+        return $daysRemaining > 0 ? $daysRemaining : 0;
+    }
+
+    public function isPasswordExpiredFromCreation()
+    {
+        return $this->getDaysUntilPasswordExpiresFromCreation() <= 0;
+    }
+
+    public function isPasswordExpiringSoonFromCreation()
+    {
+        $daysRemaining = $this->getDaysUntilPasswordExpiresFromCreation();
+        return $daysRemaining <= 7 && $daysRemaining > 0;
+    }
+
+    public function forcePasswordChange()
+    {
+        $this->force_password_change = true;
+        $this->save();
+    }
+}

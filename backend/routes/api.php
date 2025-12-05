@@ -50,6 +50,7 @@ Route::middleware('simpleauth')->group(function () {
     Route::put('/settings', [SettingsController::class, 'update']);
     Route::post('/settings/upload-default-logo', [SettingsController::class, 'uploadDefaultLogo']);
     Route::delete('/settings/delete-default-logo', [SettingsController::class, 'deleteDefaultLogo']);
+    Route::get('/users', [\App\Http\Controllers\UserController::class, 'index']);
 
     // Clients
     Route::apiResource('clients', ClientController::class);
@@ -82,4 +83,5 @@ Route::middleware('simpleauth')->group(function () {
     Route::get('/reports/projects/export', [ReportsController::class, 'exportProjectReport']);
     Route::get('/reports/revenue/export', [ReportsController::class, 'exportRevenueReport']);
     Route::post('/reports/devices/export', [ReportsController::class, 'exportDeviceReport']);
+    
 });
