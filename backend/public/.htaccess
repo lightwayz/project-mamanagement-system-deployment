@@ -1,48 +1,28 @@
-# ===========================================
-# DISABLE CACHING FOR ANGULAR FRONTEND FILES
-# ===========================================
-<IfModule mod_headers.c>
-    <FilesMatch "\.(html|htm|js|css)$">
-        Header set Cache-Control "no-cache, no-store, must-revalidate"
-        Header set Pragma "no-cache"
-        Header set Expires 0
-    </FilesMatch>
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Allow Laravel to serve all requests
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
 </IfModule>
 
-# ===========================================
-# GLOBAL CORS FOR CPANEL / APACHE
-# ===========================================
+# Proper CORS Headers
 <IfModule mod_headers.c>
     Header always set Access-Control-Allow-Origin "https://pms.webtechassets.com"
     Header always set Access-Control-Allow-Credentials "true"
     Header always set Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-    Header always set Access-Control-Allow-Headers "Origin, Content-Type, X-Requested-With, Accept, Authorization"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
 </IfModule>
 
-# ===========================================
-# FIX FOR OPTIONS PRE-FLIGHT (CPANEL BLOCK)
-# ===========================================
-RewriteEngine On
+# Fix OPTIONS preflight
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^ - [R=204,L]
+</IfModule>
 
-RewriteCond %{REQUEST_METHOD} OPTIONS
-RewriteRule ^ - [L,R=200]
-
-# ===========================================
-# LARAVEL FRONT CONTROLLER
-# ===========================================
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.php [L]
-
-# ===========================================
-# FORCE CORS FOR PHP
-# ===========================================
-<FilesMatch "\.(php)$">
-    Header always set Access-Control-Allow-Origin "https://pms.webtechassets.com"
-    Header always set Access-Control-Allow-Credentials "true"
-</FilesMatch>
-
-# PHP Handler
+# PHP handler
 <IfModule mime_module>
     AddHandler application/x-httpd-ea-php83 .php .php8 .phtml
 </IfModule>

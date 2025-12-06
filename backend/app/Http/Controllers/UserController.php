@@ -5,21 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use App\Models\User;
-use App\Services\OTPService;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    protected $otpService;
-
-    public function __construct(OTPService $otpService)
-    {
-        $this->otpService = $otpService;
-    }
-
     /**
-     * LIST USERS (Search, Filter, Sort, Pagination)
+     * LIST USERS
      */
     public function index(Request $request)
     {
@@ -34,75 +26,64 @@ class UserController extends Controller
         );
 
         // Search
-        if ($request->has('search') && !empty($request->search)) {
+        if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%$search%")
-                  ->orWhere('email', 'like', "%$search%")
-                  ->orWhere('role', 'like', "%$search%");
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('role', 'like', "%{$search}%");
             });
         }
 
-        // Role filter
-        if ($request->has('role') && !empty($request->role)) {
+        // Filters
+        if ($request->filled('role')) {
             $query->where('role', $request->role);
         }
 
-        // Active filter
         if ($request->has('active')) {
             $query->where('is_active', $request->active);
         }
 
         // Sorting
-        $sort = $request->sort ?? 'created_at';
-        $direction = $request->direction ?? 'desc';
-        $query->orderBy($sort, $direction);
+        $query->orderBy(
+            $request->get('sort', 'created_at'),
+            $request->get('direction', 'desc')
+        );
 
-        // Pagination
-        $limit = $request->limit ?? 20;
-        $users = $query->paginate($limit);
+        $users = $query->paginate($request->get('limit', 20));
 
         return response()->json([
-            'data' => $users->items(),   // <-- Angular expects ONLY ARRAY here
+            'data' => $users->items(),
             'pagination' => [
                 'total' => $users->total(),
                 'current_page' => $users->currentPage(),
                 'per_page' => $users->perPage(),
                 'last_page' => $users->lastPage(),
             ]
-        ], 200);
+        ]);
     }
 
     /**
-     * CREATE USER
+     * CREATE USER ✅ FIXED
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name'      => 'required|string|max:255',
-            'email'     => 'required|string|email|max:255|unique:users',
-            'password'  => 'required|string|min:6',
-            'role'      => 'required|in:admin,salesperson,technician',
+        $validated = $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users',
+            'role'     => 'required|in:admin,salesperson,technician',
+            'password' => 'nullable|min:8'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'error'  => 'Validation failed',
-                'errors' => $validator->errors()
-            ], 422);
-        }
+        $password = $validated['password'] ?? Str::random(12);
 
         $user = User::create([
-            'name'      => $request->name,
-            'email'     => $request->email,
-            'password'  => Hash::make($request->password),
-            'role'      => $request->role,
-            'is_active' => true,
-            'force_password_change' => true,
+            'name'      => $validated['name'],
+            'email'     => $validated['email'],
+            'role'      => $validated['role'],
+            'password'  => bcrypt($password),
+            'is_active' => true
         ]);
-
-        // initialize 90-day password expiry
-        $user->setPasswordExpiry($user->created_at);
 
         return response()->json([
             'message' => 'User created successfully',
@@ -111,33 +92,26 @@ class UserController extends Controller
     }
 
     /**
-     * SHOW A USER
-     */
-    public function show(User $user)
-    {
-        return response()->json($user);
-    }
-
-    /**
      * UPDATE USER
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name'      => 'sometimes|required|string|max:255',
-            'email'     => 'sometimes|required|string|email|max:255|unique:users,email,' . $user->id,
-            'role'      => 'sometimes|required|in:admin,salesperson,technician',
-            'is_active' => 'sometimes|boolean',
+        $user = User::findOrFail($id);
+
+        $validated = $request->validate([
+            'name'     => 'sometimes|string|max:255',
+            'email'    => 'sometimes|email|unique:users,email,' . $user->id,
+            'role'     => 'sometimes|in:admin,salesperson,technician',
+            'password' => 'nullable|min:8'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'error'  => 'Validation failed',
-                'errors' => $validator->errors()
-            ], 422);
+        if (!empty($validated['password'])) {
+            $validated['password'] = bcrypt($validated['password']);
+        } else {
+            unset($validated['password']);
         }
 
-        $user->update($request->only(['name', 'email', 'role', 'is_active']));
+        $user->update($validated);
 
         return response()->json([
             'message' => 'User updated successfully',
@@ -148,56 +122,18 @@ class UserController extends Controller
     /**
      * DELETE USER
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        if ($user->id === Auth::id()) {
+        if (Auth::id() == $id) {
             return response()->json([
-                'error' => 'Cannot delete your own account'
+                'error' => 'You cannot delete your own account'
             ], 422);
         }
 
-        $user->delete();
+        User::findOrFail($id)->delete();
 
         return response()->json([
             'message' => 'User deleted successfully'
-        ]);
-    }
-
-    /**
-     * ACTIVATE / DEACTIVATE USER
-     */
-    public function toggleStatus(User $user)
-    {
-        if ($user->id === Auth::id()) {
-            return response()->json([
-                'error' => 'Cannot deactivate your own account'
-            ], 422);
-        }
-
-        $user->update([
-            'is_active' => !$user->is_active
-        ]);
-
-        return response()->json([
-            'message' => 'User status updated successfully',
-            'user'    => $user
-        ]);
-    }
-
-    /**
-     * PASSWORD EXPIRY STATUS
-     */
-    public function getPasswordStatus()
-    {
-        $user = Auth::user();
-        
-        return response()->json([
-            'days_remaining'      => $user->getDaysUntilPasswordExpiresFromCreation(),
-            'is_expired'          => $user->isPasswordExpiredFromCreation(),
-            'is_expiring_soon'    => $user->isPasswordExpiringSoonFromCreation(),
-            'next_expiry_date'    => $user->calculatePasswordExpiryFromCreation()->format('Y-m-d'),
-            'created_at'          => $user->created_at->format('Y-m-d'),
-            'password_changed_at' => $user->password_changed_at ? $user->password_changed_at->format('Y-m-d') : null,
         ]);
     }
 }

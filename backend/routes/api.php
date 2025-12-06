@@ -9,6 +9,7 @@ use App\Http\Controllers\BuildSystemController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,9 @@ use App\Http\Controllers\SettingsController;
 
 Route::get('/', function () {
     return response()->json([
-        'status' => 'ok',
-        'message' => 'Hometronix API is running',
-        'timestamp' => now()
+        'status'    => 'ok',
+        'message'   => 'Hometronix API is running',
+        'timestamp' => now(),
     ]);
 });
 
@@ -50,7 +51,12 @@ Route::middleware('simpleauth')->group(function () {
     Route::put('/settings', [SettingsController::class, 'update']);
     Route::post('/settings/upload-default-logo', [SettingsController::class, 'uploadDefaultLogo']);
     Route::delete('/settings/delete-default-logo', [SettingsController::class, 'deleteDefaultLogo']);
-    Route::get('/users', [\App\Http\Controllers\UserController::class, 'index']);
+
+    // Users
+    Route::get('/users', [UserController::class, 'index']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
     // Clients
     Route::apiResource('clients', ClientController::class);
@@ -83,5 +89,4 @@ Route::middleware('simpleauth')->group(function () {
     Route::get('/reports/projects/export', [ReportsController::class, 'exportProjectReport']);
     Route::get('/reports/revenue/export', [ReportsController::class, 'exportRevenueReport']);
     Route::post('/reports/devices/export', [ReportsController::class, 'exportDeviceReport']);
-    
 });
