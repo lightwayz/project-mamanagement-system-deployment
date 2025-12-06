@@ -1,17 +1,46 @@
+// noinspection ES6UnusedImports
+
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabGroup } from '@angular/material/tabs';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
-import { Project, CreateProjectLocationRequest, CreateProjectDeviceRequest, DeviceSelectionItem } from '../../models/project.model';
+
+import type{
+  Project,
+  CreateProjectLocationRequest,
+  CreateProjectDeviceRequest,
+  DeviceSelectionItem
+} from '../../models/project.model';
 import { Client } from '../../models/client.model';
 import { User } from '../../models/user.model';
+
 import { AddClientDialogComponent } from '../add-client-dialog/add-client-dialog.component';
-import { ProjectDeviceSelectionDialogComponent } from '../project-device-selection-dialog/project-device-selection-dialog.component';
+
+interface ClientsApiResponse {
+  data: Client[];
+  pagination?: {
+    total: number;
+    current_page: number;
+    per_page: number;
+    last_page: number;
+  };
+}
+
+interface UsersApiResponse {
+  data: User[];
+  pagination?: {
+    total: number;
+    current_page: number;
+    per_page: number;
+    last_page: number;
+  };
+}
 
 @Component({
   selector: 'app-edit-project-dialog',
@@ -30,24 +59,24 @@ import { ProjectDeviceSelectionDialogComponent } from '../project-device-selecti
         <span class="close-x">×</span>
       </button>
     </div>
-    
+
     <mat-dialog-content class="dialog-content">
       <mat-tab-group #tabGroup class="project-tabs">
-        
+
         <!-- Tab 1: Project Information -->
         <mat-tab label="Project Details">
           <div class="tab-content">
             <form [formGroup]="projectForm" class="project-form">
               <div class="form-section">
                 <h3 class="section-title">Basic Information</h3>
-                
+
                 <div class="form-field">
                   <label class="field-label">Project Name *</label>
-                  <input type="text" 
-                         class="form-input" 
-                         formControlName="name" 
+                  <input type="text"
+                         class="form-input"
+                         formControlName="name"
                          placeholder="Enter project name">
-                  <div *ngIf="projectForm.get('name')?.hasError('required') && projectForm.get('name')?.touched" 
+                  <div *ngIf="projectForm.get('name')?.hasError('required') && projectForm.get('name')?.touched"
                        class="error-message">
                     Project name is required
                   </div>
@@ -55,11 +84,11 @@ import { ProjectDeviceSelectionDialogComponent } from '../project-device-selecti
 
                 <div class="form-field">
                   <label class="field-label">Description *</label>
-                  <textarea class="form-input form-textarea" 
-                            formControlName="description" 
-                            rows="3" 
+                  <textarea class="form-input form-textarea"
+                            formControlName="description"
+                            rows="3"
                             placeholder="Project description and scope"></textarea>
-                  <div *ngIf="projectForm.get('description')?.hasError('required') && projectForm.get('description')?.touched" 
+                  <div *ngIf="projectForm.get('description')?.hasError('required') && projectForm.get('description')?.touched"
                        class="error-message">
                     Project description is required
                   </div>
@@ -78,7 +107,7 @@ import { ProjectDeviceSelectionDialogComponent } from '../project-device-selecti
 
               <div class="form-section">
                 <h3 class="section-title">Client & Timeline</h3>
-                
+
                 <div class="client-field-row">
                   <div class="form-field client-field">
                     <label class="field-label">Client</label>
@@ -87,21 +116,24 @@ import { ProjectDeviceSelectionDialogComponent } from '../project-device-selecti
                            formControlName="clientSearch"
                            [matAutocomplete]="auto"
                            placeholder="Search or select client">
-                    <mat-autocomplete #auto="matAutocomplete" 
-                                     [displayWith]="displayClientFn"
-                                     (optionSelected)="onClientSelected($event)">
+                    <mat-autocomplete #auto="matAutocomplete"
+                                      [displayWith]="displayClientFn"
+                                      (optionSelected)="onClientSelected($event)">
                       <mat-option *ngFor="let client of filteredClients | async" [value]="client">
                         {{client.name}} - {{client.email}}
                       </mat-option>
                     </mat-autocomplete>
                   </div>
-                  
-                  <button type="button" mat-raised-button color="accent" 
-                          (click)="openAddClientDialog()" class="add-client-btn">
+
+                  <button type="button"
+                          mat-raised-button
+                          color="accent"
+                          (click)="openAddClientDialog()"
+                          class="add-client-btn">
                     New Client
                   </button>
                 </div>
-                
+
                 <div *ngIf="selectedClient" class="selected-client">
                   <mat-card class="client-card">
                     <mat-card-content>
@@ -228,9 +260,9 @@ import { ProjectDeviceSelectionDialogComponent } from '../project-device-selecti
       <button mat-stroked-button (click)="onCancel()" class="cancel-btn">
         Cancel
       </button>
-      <button mat-flat-button 
+      <button mat-flat-button
               [disabled]="projectForm.invalid || isLoading"
-              (click)="onSave()" 
+              (click)="onSave()"
               class="save-btn">
         <mat-icon *ngIf="isLoading" class="loading-icon">refresh</mat-icon>
         {{isLoading ? 'Updating...' : 'Update Project'}}
@@ -598,7 +630,6 @@ import { ProjectDeviceSelectionDialogComponent } from '../project-device-selecti
       100% { transform: rotate(360deg); }
     }
 
-    /* Responsive design */
     @media (max-width: 768px) {
       .project-tabs {
         min-width: auto;
@@ -638,7 +669,6 @@ import { ProjectDeviceSelectionDialogComponent } from '../project-device-selecti
       }
     }
 
-    /* Dark Theme Support */
     :host-context(.dark-theme) {
       .section-title {
         color: var(--text-primary) !important;
@@ -656,29 +686,30 @@ import { ProjectDeviceSelectionDialogComponent } from '../project-device-selecti
 })
 export class EditProjectDialogComponent implements OnInit {
   @ViewChild('tabGroup') tabGroup!: MatTabGroup;
-  
+
   projectForm: FormGroup;
   isLoading = false;
+
   clients: Client[] = [];
   salespeople: User[] = [];
   selectedClient: Client | null = null;
   currentUser: User | null = null;
-  filteredClients: Observable<Client[]> = new Observable();
+  filteredClients: Observable<Client[]> = of([]);
+
   project: Project;
 
   constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<EditProjectDialogComponent>,
-    private apiService: ApiService,
-    private authService: AuthService,
-    private snackBar: MatSnackBar,
-    private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: { project: Project }
+      private fb: FormBuilder,
+      private dialogRef: MatDialogRef<EditProjectDialogComponent>,
+      private apiService: ApiService,
+      private authService: AuthService,
+      private snackBar: MatSnackBar,
+      private dialog: MatDialog,
+      @Inject(MAT_DIALOG_DATA) public data: { project: Project }
   ) {
     this.project = data.project;
     this.currentUser = this.authService.getCurrentUser();
-    
-    // Initialize form with existing project data
+
     this.projectForm = this.fb.group({
       name: [this.project.name, [Validators.required, Validators.minLength(3)]],
       description: [this.project.description, [Validators.required, Validators.minLength(10)]],
@@ -689,7 +720,6 @@ export class EditProjectDialogComponent implements OnInit {
       salesperson_id: [this.project.salesperson_id || '']
     });
 
-    // Set selected client if exists
     if (this.project.client) {
       this.selectedClient = this.project.client;
       this.projectForm.get('clientSearch')?.setValue(this.project.client);
@@ -705,49 +735,60 @@ export class EditProjectDialogComponent implements OnInit {
   }
 
   private formatDateForInput(dateString: string): string {
-    // Convert date string to YYYY-MM-DD format for input[type="date"]
     const date = new Date(dateString);
     return date.toISOString().split('T')[0];
   }
 
   private loadClients(): void {
-    this.apiService.get<Client[]>('/clients').subscribe({
-      next: (clients) => {
-        this.clients = clients;
+    this.apiService.get<ClientsApiResponse>('/clients').subscribe({
+      next: (res) => {
+        this.clients = res.data || [];
+
+        // If a client was already selected from project data,
+        // keep it consistent with the refreshed list (optional enhancement)
+        if (this.selectedClient) {
+          const updated = this.clients.find(c => c.id === this.selectedClient!.id);
+          if (updated) {
+            this.selectedClient = updated;
+            this.projectForm.get('clientSearch')?.setValue(updated);
+          }
+        }
       },
       error: (error) => {
         console.error('Failed to load clients:', error);
+        this.snackBar.open('Failed to load clients', 'Close', { duration: 3000 });
       }
     });
   }
 
   private loadSalespeople(): void {
-    this.apiService.get<User[]>('/users?role=salesperson').subscribe({
-      next: (users) => {
-        this.salespeople = users;
+    this.apiService.get<UsersApiResponse>('/users?role=salesperson').subscribe({
+      next: (res) => {
+        this.salespeople = res.data || [];
       },
       error: (error) => {
         console.error('Failed to load salespeople:', error);
+        this.snackBar.open('Failed to load salespeople', 'Close', { duration: 3000 });
       }
     });
   }
 
   private setupClientAutocomplete(): void {
     this.filteredClients = this.projectForm.get('clientSearch')!.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const searchValue = typeof value === 'string' ? value : value?.name || '';
-        return this._filterClients(searchValue);
-      })
+        startWith(''),
+        map(value => {
+          const searchValue = typeof value === 'string' ? value : value?.name || '';
+          return this._filterClients(searchValue);
+        })
     );
   }
 
   private _filterClients(value: string): Client[] {
     const filterValue = value.toLowerCase();
-    return this.clients.filter(client => 
-      client.name.toLowerCase().includes(filterValue) ||
-      client.email.toLowerCase().includes(filterValue) ||
-      (client.company && client.company.toLowerCase().includes(filterValue))
+    return this.clients.filter(client =>
+        client.name.toLowerCase().includes(filterValue) ||
+        client.email.toLowerCase().includes(filterValue) ||
+        (client.company && client.company.toLowerCase().includes(filterValue))
     );
   }
 
@@ -777,13 +818,12 @@ export class EditProjectDialogComponent implements OnInit {
         this.clients.push(result);
         this.selectedClient = result;
         this.projectForm.get('clientSearch')?.setValue(result);
-        this.snackBar.open('Client added and selected for project', 'Close', { 
-          duration: 3000 
+        this.snackBar.open('Client added and selected for project', 'Close', {
+          duration: 3000
         });
       }
     });
   }
-
 
   getTotalDeviceCount(): number {
     if (!this.project.locations) return 0;
@@ -795,7 +835,7 @@ export class EditProjectDialogComponent implements OnInit {
   onSave(): void {
     if (this.projectForm.valid) {
       this.isLoading = true;
-      
+
       const formValue = this.projectForm.value;
       const updateData = {
         name: formValue.name,
@@ -809,7 +849,7 @@ export class EditProjectDialogComponent implements OnInit {
 
       this.apiService.put<Project>(`/projects/${this.project.id}`, updateData).subscribe({
         next: (updatedProject) => {
-          this.snackBar.open('Project updated successfully', 'Close', { 
+          this.snackBar.open('Project updated successfully', 'Close', {
             duration: 3000,
             panelClass: ['success-snackbar']
           });
@@ -818,12 +858,12 @@ export class EditProjectDialogComponent implements OnInit {
         error: (error) => {
           console.error('Failed to update project:', error);
           this.snackBar.open(
-            error.error?.message || 'Failed to update project', 
-            'Close', 
-            { 
-              duration: 5000,
-              panelClass: ['error-snackbar']
-            }
+              error.error?.message || 'Failed to update project',
+              'Close',
+              {
+                duration: 5000,
+                panelClass: ['error-snackbar']
+              }
           );
           this.isLoading = false;
         }

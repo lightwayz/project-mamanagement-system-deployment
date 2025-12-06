@@ -5,6 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+/* Angular Material */
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,12 +35,18 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatStepperModule } from '@angular/material/stepper';
 
+/* NgRx */
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
+/* Routing */
 import { AppRoutingModule } from './app-routing.module';
+
+/* Root */
 import { AppComponent } from './app.component';
+
+/* Components */
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ClientsComponent } from './components/clients/clients.component';
@@ -52,37 +59,47 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
 import { ProposalComponent } from './components/proposal/proposal.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { PasswordChangeComponent } from './components/password-change/password-change.component';
+
 import { AddClientDialogComponent } from './components/add-client-dialog/add-client-dialog.component';
 import { AddDeviceDialogComponent } from './components/add-device-dialog/add-device-dialog.component';
 import { AddProjectDialogComponent } from './components/add-project-dialog/add-project-dialog.component';
 import { AddUserDialogComponent } from './components/add-user-dialog/add-user-dialog.component';
 import { EditUserDialogComponent } from './components/edit-user-dialog/edit-user-dialog.component';
 import { ExcelImportDialogComponent } from './components/excel-import-dialog/excel-import-dialog.component';
-import { PasswordExpiryNotificationComponent } from './components/password-expiry-notification/password-expiry-notification.component';
 import { ExportDialogComponent } from './components/export-dialog/export-dialog.component';
-
-import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { ErrorInterceptor } from './interceptors/error.interceptor';
-import { AuthGuard } from './guards/auth.guard';
-import { RoleGuard } from './guards/role.guard';
-
-import { reducers } from './store/reducers';
-import { AuthEffects } from './store/effects/auth.effects';
-import { ProjectEffects } from './store/effects/project.effects';
-import { ClientEffects } from './store/effects/client.effects';
+import { PasswordExpiryNotificationComponent } from './components/password-expiry-notification/password-expiry-notification.component';
 import { PasswordNotificationComponent } from './components/password-notification/password-notification.component';
+
 import { DeviceSelectorComponent } from './components/device-selector/device-selector.component';
 import { ProjectDeviceManagerComponent } from './components/project-device-manager/project-device-manager.component';
 import { EditProjectDialogComponent } from './components/edit-project-dialog/edit-project-dialog.component';
 import { ProjectExportComponent } from './components/project-export/project-export.component';
 import { EditClientDialogComponent } from './components/edit-client-dialog/edit-client-dialog.component';
-import { CurrencyPipe } from './pipes/currency.pipe';
+
 import { BuildSystemsComponent } from './components/build-systems/build-systems.component';
 import { AddBuildSystemDialogComponent } from './components/add-build-system-dialog/add-build-system-dialog.component';
 import { BuildSystemDetailsComponent } from './components/build-system-details/build-system-details.component';
 import { EditBuildSystemDialogComponent } from './components/edit-build-system-dialog/edit-build-system-dialog.component';
+
 import { ProjectDeviceSelectionDialogComponent } from './components/project-device-selection-dialog/project-device-selection-dialog.component';
 import { SimpleDeviceSelectorComponent } from './components/simple-device-selector/simple-device-selector.component';
+
+/* Pipes */
+import { CurrencyPipe } from './pipes/currency.pipe';
+
+/* Guards */
+import { AuthGuard } from './guards/auth.guard';
+import { RoleGuard } from './guards/role.guard';
+
+/* Interceptors */
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
+
+/* Store */
+import { reducers } from './store/reducers';
+import { AuthEffects } from './store/effects/auth.effects';
+import { ProjectEffects } from './store/effects/project.effects';
+import { ClientEffects } from './store/effects/client.effects';
 
 @NgModule({
   declarations: [
@@ -99,27 +116,33 @@ import { SimpleDeviceSelectorComponent } from './components/simple-device-select
     ProposalComponent,
     LayoutComponent,
     PasswordChangeComponent,
+
     AddClientDialogComponent,
     AddDeviceDialogComponent,
     AddProjectDialogComponent,
     AddUserDialogComponent,
     EditUserDialogComponent,
     ExcelImportDialogComponent,
+    ExportDialogComponent,
+
     PasswordExpiryNotificationComponent,
     PasswordNotificationComponent,
-    ExportDialogComponent,
+
     DeviceSelectorComponent,
     ProjectDeviceManagerComponent,
     EditProjectDialogComponent,
     ProjectExportComponent,
     EditClientDialogComponent,
-    CurrencyPipe,
+
     BuildSystemsComponent,
     AddBuildSystemDialogComponent,
     BuildSystemDetailsComponent,
     EditBuildSystemDialogComponent,
+
     ProjectDeviceSelectionDialogComponent,
-    SimpleDeviceSelectorComponent
+    SimpleDeviceSelectorComponent,
+
+    CurrencyPipe
   ],
   imports: [
     BrowserModule,
@@ -129,8 +152,7 @@ import { SimpleDeviceSelectorComponent } from './components/simple-device-select
     FormsModule,
     CommonModule,
     AppRoutingModule,
-    
-    // Material modules
+
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
@@ -160,9 +182,12 @@ import { SimpleDeviceSelectorComponent } from './components/simple-device-select
     MatDividerModule,
     MatStepperModule,
 
-    // NgRx
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects, ProjectEffects, ClientEffects]),
+    EffectsModule.forRoot([
+      AuthEffects,
+      ProjectEffects,
+      ClientEffects
+    ]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: false
@@ -184,4 +209,4 @@ import { SimpleDeviceSelectorComponent } from './components/simple-device-select
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
